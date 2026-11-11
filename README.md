@@ -6,12 +6,19 @@ Next.js cu export static pentru GitHub Pages, în română, engleză, italiană 
 
 ```bash
 npm install
-npm run build
-npx serve out -l 4173
-# deschide http://localhost:4173/corul-harmonia-christi/ (cu serve: pune build-ul sub acel folder sau setează NEXT_PUBLIC_BASE_PATH=/)
 ```
 
-Pentru lucru zilnic: `NEXT_PUBLIC_BASE_PATH=/ npm run dev`, apoi `http://localhost:3000/ro/`.
+Varianta de producție, în PowerShell, apoi deschide `http://localhost:4173/ro/`:
+
+```powershell
+$env:NEXT_PUBLIC_BASE_PATH="/"; npm run build; npx serve out -l 4173
+```
+
+Pentru lucru zilnic, tot în PowerShell, apoi `http://localhost:3000/ro/`:
+
+```powershell
+$env:NEXT_PUBLIC_BASE_PATH="/"; npm run dev
+```
 
 Verificări: `npm test`, `npm run typecheck`, `npm run lint`.
 
