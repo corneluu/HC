@@ -1,10 +1,10 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,38 +16,74 @@ import { CONTACT } from "@/data/music";
 
 const FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_ID;
 const VOICES = ["sopran", "alto", "tenor", "bas", "nustiu"] as const;
-const fieldClass = "h-12 rounded-xl bg-background px-4 text-base md:text-base";
+const fieldClass = "h-13 rounded-lg bg-background px-4 text-lg md:text-lg";
+const areaClass = "rounded-lg bg-background p-4 text-base md:text-base";
 
 const EMPTY: JoinValues = { name: "", phone: "", age: "", voice: "", experience: "", instrument: "", message: "", parentalConsent: false, privacyConsent: false };
 
+/** One question per screen. Each step lists the errors that must be clear before moving on. */
+const STEPS: JoinErrorKey[][] = [["name"], ["phone"], ["age", "parentalConsent"], ["voice"], [], ["privacyConsent"]];
+
 type Props = { locale: string; t: Dict["join"]; voices: Dict["home"]["voices"] };
 
-const Hint = ({ id, children }: { id: string; children: string }) => <p id={id} className="mt-1 text-base text-muted-foreground">{children}</p>;
+const Hint = ({ id, children }: { id: string; children: string }) => <p id={id} className="mt-1.5 text-[0.9375rem] text-muted-foreground">{children}</p>;
+
+const CONFETTI = Array.from({ length: 30 }, (_, i) => ({
+  "--x": `${(i * 37) % 100}%`, "--d": `${(i % 7) * 0.11}s`, "--t": `${1.5 + (i % 5) * 0.28}s`, "--rot": `${240 + i * 43}deg`,
+  "--c": ["var(--yellow)", "#f6f3e8", "#7fdcc0"][i % 3],
+}) as React.CSSProperties);
 
 function Form({ locale, t, voices, initialVoice }: Props & { initialVoice: string }) {
   const [v, setV] = useState<JoinValues>({ ...EMPTY, voice: initialVoice });
+  const [step, setStep] = useState(0);
   const [honeypot, setHoneypot] = useState("");
   const [errors, setErrors] = useState<JoinErrorKey[]>([]);
   const [sending, setSending] = useState(false);
   const [done, setDone] = useState(false);
+  const pane = useRef<HTMLDivElement>(null);
+  const moved = useRef(false);
 
   const set = <K extends keyof JoinValues>(key: K, value: JoinValues[K]) => setV((old) => ({ ...old, [key]: value }));
   const minor = needsParentalConsent(v.age);
+  const last = step === STEPS.length - 1;
+
+  // After a step change (not on first load) the new question takes focus, so keyboards and screen readers follow.
+  useEffect(() => {
+    if (!moved.current) return;
+    pane.current?.querySelector<HTMLElement>("input:not([type=hidden]), textarea, button[role=checkbox]")?.focus({ preventScroll: true });
+    pane.current?.scrollIntoView({ block: "nearest" });
+  }, [step]);
+
+  const go = (to: number) => { moved.current = true; setStep(to); };
+
+  // The thank-you panel is shorter than the form, so bring it back into view.
+  const thanks = useRef<HTMLDivElement>(null);
+  useEffect(() => { if (done) thanks.current?.scrollIntoView({ block: "center" }); }, [done]);
 
   const err = (key: JoinErrorKey) =>
-    errors.includes(key) ? <p id={`${key}-error`} className="mt-1.5 text-base font-medium text-destructive">{t.errors[key]}</p> : null;
+    errors.includes(key) ? <p id={`${key}-error`} className="mt-2 font-medium text-destructive">{t.errors[key]}</p> : null;
   const aria = (key: JoinErrorKey, hint?: string) => ({
     "aria-invalid": errors.includes(key) || undefined,
     "aria-describedby": [errors.includes(key) ? `${key}-error` : "", hint ?? ""].filter(Boolean).join(" ") || undefined,
   });
 
+  function next() {
+    const found = validateJoin(v).filter((k) => STEPS[step].includes(k));
+    setErrors(found);
+    if (found.length) { document.getElementById(found[0])?.focus(); return; }
+    go(step + 1);
+  }
+
   async function submit(e: React.FormEvent) {
     e.preventDefault();
+    if (!last) { next(); return; }
     const found = validateJoin(v);
     setErrors(found);
     if (found.length) {
       toast.error(t.invalid);
-      document.getElementById(found[0])?.focus();
+      const first = STEPS.findIndex((keys) => keys.some((k) => found.includes(k)));
+      if (first !== step) go(first);
+      else document.getElementById(found[0])?.focus();
       return;
     }
     if (honeypot) { setDone(true); return; } // a bot filled the hidden field: pretend success, send nothing
@@ -65,7 +101,6 @@ function Form({ locale, t, voices, initialVoice }: Props & { initialVoice: strin
         }),
       });
       if (!res.ok) throw new Error(String(res.status));
-      toast.success(t.success);
       setDone(true);
     } catch {
       toast.error(t.failure);
@@ -74,14 +109,21 @@ function Form({ locale, t, voices, initialVoice }: Props & { initialVoice: strin
     }
   }
 
-  if (done) return <p role="status" className="tile tile-yellow p-8 font-heading text-3xl font-medium leading-tight">{t.success}</p>;
+  if (done) {
+    return (
+      <div ref={thanks} role="status" className="tile tile-green relative grid min-h-64 scroll-mt-28 content-center p-6 sm:p-10">
+        <div className="confetti" aria-hidden>{CONFETTI.map((style, i) => <i key={i} style={style} />)}</div>
+        <p className="title-section relative font-heading font-semibold">{t.success}</p>
+      </div>
+    );
+  }
 
-  const labelClass = "text-base font-semibold";
+  const question = "title-card block font-heading font-semibold";
 
   return (
-    <form onSubmit={submit} noValidate className="grid gap-5 sm:grid-cols-2">
+    <form onSubmit={submit} noValidate>
       {!FORM_ID ? (
-        <p role="note" className="tile tile-yellow p-5 font-medium sm:col-span-2">
+        <p role="note" className="mb-6 rounded-lg border-2 border-green p-4 font-medium">
           {t.unconfigured.split(CONTACT.phoneDisplay)[0]}
           <a href={CONTACT.phoneHref} className="font-bold underline underline-offset-4">{CONTACT.phoneDisplay}</a>
           {t.unconfigured.split(CONTACT.phoneDisplay)[1]}
@@ -93,71 +135,108 @@ function Form({ locale, t, voices, initialVoice }: Props & { initialVoice: strin
         <label>Website<input tabIndex={-1} autoComplete="off" name="_gotcha" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} /></label>
       </div>
 
-      <div className="sm:col-span-2">
-        <Label htmlFor="name" className={labelClass}>{t.name}</Label>
-        <Input id="name" autoComplete="name" className={`mt-1.5 ${fieldClass}`} value={v.name} onChange={(e) => set("name", e.target.value)} {...aria("name")} />
-        {err("name")}
-      </div>
-      <div>
-        <Label htmlFor="phone" className={labelClass}>{t.phone}</Label>
-        <Input id="phone" type="tel" autoComplete="tel" className={`mt-1.5 ${fieldClass}`} value={v.phone} onChange={(e) => set("phone", e.target.value)} {...aria("phone")} />
-        {err("phone")}
-      </div>
-      <div>
-        <Label htmlFor="age" className={labelClass}>{t.age}</Label>
-        <Input id="age" inputMode="numeric" className={`mt-1.5 ${fieldClass}`} value={v.age} onChange={(e) => set("age", e.target.value)} {...aria("age")} />
-        {err("age")}
-      </div>
-      <div className="sm:col-span-2">
-        <Label htmlFor="voice" className={labelClass}>{t.voice}</Label>
-        <select id="voice" className={`mt-1.5 w-full rounded-xl border border-input bg-background px-4 text-base ${fieldClass.replace("md:text-base", "")}`} value={v.voice} onChange={(e) => set("voice", e.target.value)} {...aria("voice")}>
-          <option value="">{t.voiceChoose}</option>
-          {VOICES.map((x) => <option key={x} value={x}>{voices[x].name}</option>)}
-        </select>
-        {err("voice")}
-      </div>
-      <div className="sm:col-span-2">
-        <Label htmlFor="experience" className={labelClass}>{t.experience}</Label>
-        <Textarea id="experience" rows={3} className="mt-1.5 rounded-xl bg-background p-4 text-base md:text-base" aria-describedby="experience-hint" value={v.experience} onChange={(e) => set("experience", e.target.value)} />
-        <Hint id="experience-hint">{t.experienceHint}</Hint>
-      </div>
-      <div className="sm:col-span-2">
-        <Label htmlFor="instrument" className={labelClass}>{t.instrument}</Label>
-        <Input id="instrument" className={`mt-1.5 ${fieldClass}`} aria-describedby="instrument-hint" value={v.instrument} onChange={(e) => set("instrument", e.target.value)} />
-        <Hint id="instrument-hint">{t.instrumentHint}</Hint>
-      </div>
-      <div className="sm:col-span-2">
-        <Label htmlFor="message" className={labelClass}>{t.message}</Label>
-        <Textarea id="message" rows={3} className="mt-1.5 rounded-xl bg-background p-4 text-base md:text-base" aria-describedby="message-hint" value={v.message} onChange={(e) => set("message", e.target.value)} />
-        <Hint id="message-hint">{t.messageHint}</Hint>
-      </div>
+      <p className="mb-2 text-[0.9375rem] font-semibold" aria-live="polite">{t.stepWord} {step + 1} {t.stepOf} {STEPS.length}</p>
+      <div className="steps-bar" aria-hidden><i style={{ width: `${((step + 1) / STEPS.length) * 100}%` }} /></div>
 
-      {minor ? (
-        <div className="sm:col-span-2">
-          <div className="flex items-start gap-3">
-            <Checkbox id="parentalConsent" className="mt-0.5 size-6" checked={v.parentalConsent} onCheckedChange={(c) => set("parentalConsent", c === true)} {...aria("parentalConsent")} />
-            <Label htmlFor="parentalConsent" className="block text-base font-normal leading-snug">{t.parental}</Label>
+      <div ref={pane} key={step} className="step-in mt-7 min-h-52 scroll-mt-28">
+        {step === 0 ? (
+          <div>
+            <Label htmlFor="name" className={question}>{t.q.name}</Label>
+            <Input id="name" autoComplete="name" enterKeyHint="next" className={`mt-4 ${fieldClass}`} value={v.name} onChange={(e) => set("name", e.target.value)} {...aria("name", "name-hint")} />
+            <Hint id="name-hint">{t.name}</Hint>
+            {err("name")}
           </div>
-          {err("parentalConsent")}
-        </div>
-      ) : null}
+        ) : null}
 
-      <div className="sm:col-span-2">
-        <div className="flex items-start gap-3">
-          <Checkbox id="privacyConsent" className="mt-0.5 size-6" checked={v.privacyConsent} onCheckedChange={(c) => set("privacyConsent", c === true)} {...aria("privacyConsent")} />
-          <Label htmlFor="privacyConsent" className="block text-base font-normal leading-snug">
-            {t.privacyBefore}
-            <Link href={href(locale, "confidentialitate")} className="font-semibold underline underline-offset-4">{t.privacyLink}</Link>
-            {t.privacyAfter}
-          </Label>
-        </div>
-        {err("privacyConsent")}
+        {step === 1 ? (
+          <div>
+            <Label htmlFor="phone" className={question}>{t.q.phone}</Label>
+            <Input id="phone" type="tel" inputMode="tel" autoComplete="tel" enterKeyHint="next" className={`mt-4 ${fieldClass}`} value={v.phone} onChange={(e) => set("phone", e.target.value)} {...aria("phone", "phone-hint")} />
+            <Hint id="phone-hint">{t.phone}</Hint>
+            {err("phone")}
+          </div>
+        ) : null}
+
+        {step === 2 ? (
+          <div>
+            <Label htmlFor="age" className={question}>{t.q.age}</Label>
+            <Input id="age" inputMode="numeric" enterKeyHint="next" className={`mt-4 max-w-40 ${fieldClass}`} value={v.age} onChange={(e) => set("age", e.target.value)} {...aria("age", "age-hint")} />
+            <Hint id="age-hint">{t.age}</Hint>
+            {err("age")}
+            {minor ? (
+              <div className="mt-6">
+                <div className="flex items-start gap-3">
+                  <Checkbox id="parentalConsent" className="mt-0.5 size-6 shrink-0" checked={v.parentalConsent} onCheckedChange={(c) => set("parentalConsent", c === true)} {...aria("parentalConsent")} />
+                  <Label htmlFor="parentalConsent" className="block text-base font-normal leading-snug">{t.parental}</Label>
+                </div>
+                {err("parentalConsent")}
+              </div>
+            ) : null}
+          </div>
+        ) : null}
+
+        {step === 3 ? (
+          <fieldset className="min-w-0" {...aria("voice")}>
+            <legend className={question}>{t.q.voice}</legend>
+            <div className="mt-4 grid gap-2 sm:grid-cols-2">
+              {VOICES.map((x, i) => (
+                <label key={x} className="choice">
+                  <input id={i === 0 ? "voice" : undefined} type="radio" name="voice" value={x} checked={v.voice === x} onChange={() => set("voice", x)} className="sr-only" />
+                  {voices[x].name}
+                </label>
+              ))}
+            </div>
+            {v.voice ? <p className="mt-4 max-w-[46ch] text-[0.9375rem]" aria-live="polite">{voices[v.voice as keyof typeof voices]?.line}</p> : null}
+            {err("voice")}
+          </fieldset>
+        ) : null}
+
+        {step === 4 ? (
+          <div className="grid gap-6">
+            <div>
+              <Label htmlFor="experience" className={question}>{t.q.more}</Label>
+              <Textarea id="experience" rows={3} className={`mt-4 ${areaClass}`} aria-describedby="experience-hint" value={v.experience} onChange={(e) => set("experience", e.target.value)} />
+              <Hint id="experience-hint">{t.experienceHint}</Hint>
+            </div>
+            <div>
+              <Label htmlFor="instrument" className="text-base font-semibold">{t.instrument} <span className="font-normal text-muted-foreground">({t.optional})</span></Label>
+              <Input id="instrument" className={`mt-2 ${fieldClass}`} aria-describedby="instrument-hint" value={v.instrument} onChange={(e) => set("instrument", e.target.value)} />
+              <Hint id="instrument-hint">{t.instrumentHint}</Hint>
+            </div>
+          </div>
+        ) : null}
+
+        {step === 5 ? (
+          <div className="grid gap-6">
+            <div>
+              <Label htmlFor="message" className={question}>{t.q.last}</Label>
+              <Textarea id="message" rows={3} className={`mt-4 ${areaClass}`} aria-describedby="message-hint" value={v.message} onChange={(e) => set("message", e.target.value)} />
+              <Hint id="message-hint">{`${t.messageHint} (${t.optional})`}</Hint>
+            </div>
+            <div>
+              <div className="flex items-start gap-3">
+                <Checkbox id="privacyConsent" className="mt-0.5 size-6 shrink-0" checked={v.privacyConsent} onCheckedChange={(c) => set("privacyConsent", c === true)} {...aria("privacyConsent")} />
+                <Label htmlFor="privacyConsent" className="block text-base font-normal leading-snug">
+                  {t.privacyBefore}
+                  <Link href={href(locale, "confidentialitate")} className="font-semibold underline underline-offset-4">{t.privacyLink}</Link>
+                  {t.privacyAfter}
+                </Label>
+              </div>
+              {err("privacyConsent")}
+            </div>
+          </div>
+        ) : null}
       </div>
 
-      <div className="sm:col-span-2">
-        <Button type="submit" disabled={sending} className="h-13 rounded-full px-8 text-lg font-semibold">
-          {sending ? t.sending : t.submit}
-        </Button>
+      <div className="mt-8 flex flex-wrap justify-between gap-2">
+        {step > 0 ? (
+          <button type="button" onClick={() => { setErrors([]); go(step - 1); }} className="btn btn-line"><ArrowLeft className="size-4 shrink-0" aria-hidden /> {t.back}</button>
+        ) : <span />}
+        {last ? (
+          <button type="submit" disabled={sending} className="btn btn-primary go">{sending ? t.sending : t.submit} <ArrowRight className="arrow size-4" aria-hidden /></button>
+        ) : (
+          <button type="submit" className="btn btn-green go">{t.next} <ArrowRight className="arrow size-4" aria-hidden /></button>
+        )}
       </div>
     </form>
   );

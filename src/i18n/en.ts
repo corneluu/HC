@@ -22,9 +22,11 @@ export const en: Dict = {
     "alatura-te": "Join us", sustine: "Support", contact: "Contact", confidentialitate: "Privacy",
     more: "More", menu: "Menu", closeMenu: "Close menu", skip: "Skip to content",
     themeLight: "Switch to light theme", themeDark: "Switch to dark theme", language: "Language",
+    tabHome: "Home", tabEvents: "Events", tabMusic: "Music", tabGallery: "Gallery", tabMore: "More", moreTitle: "All pages",
   },
   footer: {
     line: "A family that prays by singing.",
+    callTitle: "There's room for your voice",
     pages: "Pages", follow: "Find us here too", call: "Call us",
     credit: "Made by Miron Cornel-Iosif",
     photos: "Photos from our concerts and tours.",
@@ -52,6 +54,10 @@ export const en: Dict = {
       nustiu: { name: "Not sure yet", line: "That is completely fine. We will find it together at your first rehearsal." },
     },
     marqueeLabel: "Photos from our concerts and tours",
+    hubTitle: "Everything we are, one tap away",
+    hub: { despre: "Our story, conductor and council", evenimente: "What's next and where we've sung", muzica: "Two albums, 25 songs", galerie: "Concerts and tours in pictures", "italia-2026": "Memories from the road", "inctc-2026": "10 choirs in Timișoara", aniversari: "5 years, then 6", "alatura-te": "We're not only looking for voices. We're looking for you.", sustine: "Help us go further", contact: "Call or message us" },
+    allEvents: "All events", photosTitle: "From our album", photosCta: "See the whole gallery",
+    musicTitle: "Two albums to listen to", musicLead: "Tap a cover to start the player.", musicCta: "All our music",
   },
   about: {
     h1: "A story that began on Zoom",
@@ -134,6 +140,7 @@ export const en: Dict = {
     artistTitle: "All our music, on Spotify",
     videosTitle: "Worth watching",
     channel: "Our YouTube channel",
+    openPlayer: "Play the album", playerNote: "The player loads from Spotify only when you tap.",
   },
   gallery: {
     h1: "Us, in pictures",
@@ -162,6 +169,8 @@ export const en: Dict = {
     unconfigured: "Online sign-up is not active right now. Please call the conductor, Iustin Călin, on 0753 590 671.",
     invalid: "Please check the marked fields.",
     optional: "optional",
+    stepWord: "Step", stepOf: "of", next: "Next", back: "Back",
+    q: { name: "What's your name?", phone: "What number can we call?", age: "How old are you?", voice: "What voice do you think you have?", more: "Have you sung before?", last: "Anything else we should know?" },
     errors: {
       name: "Please tell us your name.",
       phone: "Please enter a valid phone number.",

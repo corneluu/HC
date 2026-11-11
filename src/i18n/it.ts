@@ -22,9 +22,11 @@ export const it: Dict = {
     "alatura-te": "Unisciti", sustine: "Sostienici", contact: "Contatti", confidentialitate: "Privacy",
     more: "Altro", menu: "Menu", closeMenu: "Chiudi il menu", skip: "Vai al contenuto",
     themeLight: "Passa al tema chiaro", themeDark: "Passa al tema scuro", language: "Lingua",
+    tabHome: "Home", tabEvents: "Eventi", tabMusic: "Musica", tabGallery: "Galleria", tabMore: "Altro", moreTitle: "Tutte le pagine",
   },
   footer: {
     line: "Una famiglia che prega cantando.",
+    callTitle: "C'è posto per la tua voce",
     pages: "Pagine", follow: "Ci trovi anche qui", call: "Chiamaci",
     credit: "Realizzato da Miron Cornel-Iosif",
     photos: "Fotografie dei nostri concerti e delle nostre tournée.",
@@ -52,6 +54,10 @@ export const it: Dict = {
       nustiu: { name: "Non lo so ancora", line: "Va benissimo. La troviamo insieme alla prima prova." },
     },
     marqueeLabel: "Fotografie dei nostri concerti e delle nostre tournée",
+    hubTitle: "Tutto ciò che siamo, a un tocco",
+    hub: { despre: "La storia, il direttore, il consiglio", evenimente: "Cosa c'è in programma e dove abbiamo cantato", muzica: "Due album, 25 brani", galerie: "Concerti e tournée in foto", "italia-2026": "Ricordi di viaggio", "inctc-2026": "10 cori a Timișoara", aniversari: "5 anni, poi 6", "alatura-te": "Non cerchiamo solo voci. Cerchiamo te.", sustine: "Aiutaci ad andare più lontano", contact: "Chiamaci o scrivici" },
+    allEvents: "Tutti gli eventi", photosTitle: "Dal nostro album", photosCta: "Vedi tutta la galleria",
+    musicTitle: "Due album da ascoltare", musicLead: "Tocca una copertina per avviare il player.", musicCta: "Tutta la musica",
   },
   about: {
     h1: "Una storia iniziata su Zoom",
@@ -134,6 +140,7 @@ export const it: Dict = {
     artistTitle: "Tutta la nostra musica, su Spotify",
     videosTitle: "Da guardare",
     channel: "Il nostro canale YouTube",
+    openPlayer: "Ascolta l'album", playerNote: "Il player si carica da Spotify solo quando tocchi.",
   },
   gallery: {
     h1: "Noi, per immagini",
@@ -162,6 +169,8 @@ export const it: Dict = {
     unconfigured: "Al momento l'iscrizione online non è attiva. Chiama il direttore, Iustin Călin, allo 0753 590 671.",
     invalid: "Controlla i campi segnalati.",
     optional: "facoltativo",
+    stepWord: "Passo", stepOf: "di", next: "Avanti", back: "Indietro",
+    q: { name: "Come ti chiami?", phone: "A che numero ti chiamiamo?", age: "Quanti anni hai?", voice: "Che voce pensi di avere?", more: "Hai già cantato?", last: "C'è altro che vuoi dirci?" },
     errors: {
       name: "Scrivici il tuo nome.",
       phone: "Inserisci un numero di telefono valido.",

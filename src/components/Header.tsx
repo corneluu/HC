@@ -3,12 +3,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { Drawer } from "vaul";
 import { useTheme } from "next-themes";
-import { ChevronDown, Menu, Moon, Sun, X } from "lucide-react";
+import { ArrowRight, CalendarDays, ChevronDown, Ellipsis, Home, Images, Mic, Moon, Music, Sun } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
 import type { Dict } from "@/i18n";
 import { href } from "@/i18n";
 import { LOCALES, type Page } from "@/i18n/config";
@@ -16,6 +15,8 @@ import { asset } from "@/lib/site";
 
 const PRIMARY: Exclude<Page, "">[] = ["despre", "evenimente", "muzica", "galerie"];
 const MORE: Exclude<Page, "">[] = ["italia-2026", "inctc-2026", "aniversari", "sustine", "contact"];
+const SHEET: Exclude<Page, "">[] = ["despre", "italia-2026", "inctc-2026", "aniversari", "sustine", "contact", "confidentialitate"];
+const LANGUAGE_NAMES: Record<string, string> = { ro: "Română", en: "English", it: "Italiano", de: "Deutsch" };
 const noSubscribe = () => () => {};
 
 type Nav = Dict["nav"];
@@ -29,7 +30,7 @@ function ThemeToggle({ t }: { t: Nav }) {
       type="button"
       onClick={() => setTheme(dark ? "light" : "dark")}
       aria-label={dark ? t.themeLight : t.themeDark}
-      className="grid size-11 place-items-center rounded-full hover:bg-muted"
+      className="grid size-11 shrink-0 place-items-center rounded-lg hover:bg-muted"
     >
       {dark ? <Sun className="size-5" /> : <Moon className="size-5" />}
     </button>
@@ -41,89 +42,151 @@ function localeHref(pathname: string, locale: string) {
   return asset(`/${locale}/${rest}`);
 }
 
-function Languages({ locale, pathname, label }: { locale: string; pathname: string; label: string }) {
+function LanguageMenu({ locale, pathname, label }: { locale: string; pathname: string; label: string }) {
   return (
-    <div role="group" aria-label={label} className="flex items-center text-[0.9375rem] font-medium">
-      {LOCALES.map((l) => (
-        <a
-          key={l}
-          href={localeHref(pathname, l)}
-          hrefLang={l}
-          lang={l}
-          aria-current={l === locale ? "true" : undefined}
-          className={`grid h-11 min-w-9 place-items-center rounded-full px-1 uppercase hover:bg-muted ${l === locale ? "font-bold text-green-text underline underline-offset-4" : ""}`}
-        >
-          {l}
-        </a>
-      ))}
-    </div>
+    <DropdownMenu>
+      <DropdownMenuTrigger aria-label={`${label}: ${LANGUAGE_NAMES[locale]}`} className="inline-flex h-11 shrink-0 items-center gap-1 rounded-lg px-2.5 text-[0.9375rem] font-semibold uppercase hover:bg-muted">
+        {locale} <ChevronDown className="size-4" aria-hidden />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="min-w-40 p-1.5">
+        {LOCALES.map((l) => (
+          <DropdownMenuItem key={l} asChild className="rounded-md px-3 py-2.5 text-base">
+            {/* A plain link: changing language reloads the document so <html lang> follows. */}
+            <a href={localeHref(pathname, l)} hrefLang={l} lang={l} aria-current={l === locale ? "true" : undefined} className={l === locale ? "font-bold" : ""}>
+              {LANGUAGE_NAMES[l]}
+            </a>
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
 
-export function Header({ locale, t, siteName }: { locale: string; t: Nav; siteName: string }) {
+/** Hides the bar while reading down, brings it back on the way up. */
+function useHideOnScroll() {
+  const ref = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    let last = scrollY;
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const y = scrollY;
+      el.dataset.scrolled = String(y > 8);
+      if (Math.abs(y - last) < 6) return;
+      el.dataset.hidden = String(y > last && y > 140);
+      last = y;
+    };
+    const onScroll = () => { frame ||= requestAnimationFrame(update); };
+    addEventListener("scroll", onScroll, { passive: true });
+    return () => { removeEventListener("scroll", onScroll); cancelAnimationFrame(frame); };
+  }, []);
+  return ref;
+}
+
+export function Header({ locale, t, siteName, joinLabel }: { locale: string; t: Nav; siteName: string; joinLabel: string }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const current = (page: Page) => (pathname.split("/")[2] === page ? ("page" as const) : undefined);
-  const linkClass = "rounded-full px-3 py-2 font-medium hover:bg-muted aria-[current=page]:underline aria-[current=page]:underline-offset-4 aria-[current=page]:decoration-2";
+  const ref = useHideOnScroll();
+  const page = pathname.split("/")[2] ?? "";
+  const current = (p: Page) => (page === p ? ("page" as const) : undefined);
+  const linkClass = "rounded-lg px-3 py-2 font-medium hover:bg-muted aria-[current=page]:bg-green aria-[current=page]:text-on-green";
+
+  const tabs = [
+    { page: "" as Page, label: t.tabHome, Icon: Home },
+    { page: "evenimente" as Page, label: t.tabEvents, Icon: CalendarDays },
+    { page: "muzica" as Page, label: t.tabMusic, Icon: Music },
+    { page: "galerie" as Page, label: t.tabGallery, Icon: Images },
+  ];
+  const inSheet = page === "alatura-te" || (SHEET as string[]).includes(page);
 
   return (
-    <header className="frame flex items-center justify-between gap-3 py-3">
-      <Link href={href(locale, "")} className="flex items-center gap-2.5 font-heading text-lg font-semibold leading-none">
-        <span className="tile-logo size-11 shrink-0 rounded-full">
-          <img src={asset("/brand/kite-96.webp")} alt="" width={68} height={96} className="h-8 w-auto" />
-        </span>
-        <span className="hidden min-[420px]:block">Harmonia Christi</span>
-        <span className="sr-only min-[420px]:hidden">{siteName}</span>
+    <>
+      <header ref={ref} className="site-header">
+        <div className="frame flex items-center justify-between gap-2 py-2.5">
+          <Link href={href(locale, "")} className="flex min-w-0 items-center gap-2.5 font-heading text-lg font-semibold leading-none">
+            <span className="tile-logo size-11 shrink-0 rounded-lg">
+              <img src={asset("/brand/kite-96.webp")} alt="" width={68} height={96} className="h-8 w-auto" />
+            </span>
+            <span className="hidden whitespace-nowrap min-[400px]:block lg:hidden xl:block">Harmonia Christi</span>
+            <span className="sr-only min-[400px]:hidden lg:block xl:hidden">{siteName}</span>
+          </Link>
+
+          <nav className="hidden items-center gap-1 lg:flex" aria-label={t.menu}>
+            {PRIMARY.map((p) => (
+              <Link key={p} href={href(locale, p)} aria-current={current(p)} className={linkClass}>{t[p]}</Link>
+            ))}
+            <DropdownMenu>
+              <DropdownMenuTrigger className={`${linkClass} inline-flex items-center gap-1`}>
+                {t.more} <ChevronDown className="size-4" aria-hidden />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="min-w-52 p-1.5">
+                {MORE.map((p) => (
+                  <DropdownMenuItem key={p} asChild className="rounded-md px-3 py-2.5 text-base">
+                    <Link href={href(locale, p)}>{t[p]}</Link>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </nav>
+
+          <div className="flex shrink-0 items-center gap-0.5">
+            <LanguageMenu locale={locale} pathname={pathname} label={t.language} />
+            <ThemeToggle t={t} />
+            <Link href={href(locale, "alatura-te")} className="btn btn-primary go ml-2 hidden lg:inline-flex">
+              {joinLabel} <ArrowRight className="arrow size-4" aria-hidden />
+            </Link>
+          </div>
+        </div>
+      </header>
+
+      <Link href={href(locale, "alatura-te")} className="fab">
+        <Mic className="size-5 shrink-0" aria-hidden /> {joinLabel}
       </Link>
 
-      <nav className="hidden items-center gap-1 lg:flex" aria-label={t.menu}>
-        {PRIMARY.map((p) => (
-          <Link key={p} href={href(locale, p)} aria-current={current(p)} className={linkClass}>{t[p]}</Link>
+      <nav className="tabbar" aria-label={t.menu}>
+        {tabs.map(({ page: p, label, Icon }) => (
+          <Link key={p} href={href(locale, p)} aria-current={current(p)} className="tab">
+            <Icon className="size-[1.375rem]" aria-hidden />
+            <span>{label}</span>
+          </Link>
         ))}
-        <DropdownMenu>
-          <DropdownMenuTrigger className={`${linkClass} inline-flex items-center gap-1`}>
-            {t.more} <ChevronDown className="size-4" />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="min-w-52 p-1.5">
-            {MORE.map((p) => (
-              <DropdownMenuItem key={p} asChild className="rounded-lg px-3 py-2.5 text-base">
-                <Link href={href(locale, p)}>{t[p]}</Link>
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </nav>
-
-      <div className="flex items-center gap-1">
-        <div className="hidden lg:block"><Languages locale={locale} pathname={pathname} label={t.language} /></div>
-        <ThemeToggle t={t} />
-        <Button asChild className="hidden h-11 rounded-full px-5 text-base font-semibold sm:inline-flex">
-          <Link href={href(locale, "alatura-te")}>{t["alatura-te"]}</Link>
-        </Button>
-        <Drawer.Root open={open} onOpenChange={setOpen} direction="right">
-          <Drawer.Trigger aria-label={t.menu} className="grid size-11 place-items-center rounded-full hover:bg-muted lg:hidden">
-            <Menu className="size-6" />
+        <Drawer.Root open={open} onOpenChange={setOpen}>
+          <Drawer.Trigger className="tab" aria-current={inSheet ? "page" : undefined}>
+            <Ellipsis className="size-[1.375rem]" aria-hidden />
+            <span>{t.tabMore}</span>
           </Drawer.Trigger>
           <Drawer.Portal>
-            <Drawer.Overlay className="fixed inset-0 z-40 bg-black/50" />
-            <Drawer.Content className="fixed inset-y-0 right-0 z-50 flex w-[min(22rem,88vw)] flex-col overflow-y-auto bg-background p-5 outline-none">
-              <div className="flex items-center justify-between">
-                <Drawer.Title className="font-heading text-xl font-semibold">{t.menu}</Drawer.Title>
-                <Drawer.Close aria-label={t.closeMenu} className="grid size-11 place-items-center rounded-full hover:bg-muted"><X className="size-6" /></Drawer.Close>
+            <Drawer.Overlay className="fixed inset-0 z-40 bg-black/55" />
+            <Drawer.Content className="fixed inset-x-0 bottom-0 z-50 flex max-h-[88svh] flex-col rounded-t-2xl bg-background outline-none">
+              <div aria-hidden className="mx-auto mt-2.5 h-1.5 w-12 shrink-0 rounded-full bg-border" />
+              <div className="overflow-y-auto px-4 pb-[calc(1.25rem+env(safe-area-inset-bottom,0px))] pt-3">
+                <Drawer.Title className="eyebrow"><span className="romb" aria-hidden />{t.moreTitle}</Drawer.Title>
+                <Drawer.Description className="sr-only">{siteName}</Drawer.Description>
+                <nav className="mt-3 grid" aria-label={t.moreTitle}>
+                  {SHEET.map((p) => (
+                    <Link key={p} href={href(locale, p)} onClick={() => setOpen(false)} aria-current={current(p)} className="go flex min-h-13 items-center justify-between gap-3 border-b border-border py-3 font-heading text-[1.375rem] font-medium leading-tight aria-[current=page]:text-green-text">
+                      {t[p]} <ArrowRight className="arrow size-5 shrink-0" aria-hidden />
+                    </Link>
+                  ))}
+                </nav>
+                <Link href={href(locale, "alatura-te")} onClick={() => setOpen(false)} className="btn btn-primary go mt-5 w-full">
+                  {joinLabel} <ArrowRight className="arrow size-4" aria-hidden />
+                </Link>
+                <div role="group" aria-label={t.language} className="mt-5 grid grid-cols-4 gap-2">
+                  {LOCALES.map((l) => (
+                    <a key={l} href={localeHref(pathname, l)} hrefLang={l} lang={l} aria-current={l === locale ? "true" : undefined} aria-label={LANGUAGE_NAMES[l]}
+                      className={`grid min-h-11 place-items-center rounded-lg border-2 text-[0.9375rem] font-semibold uppercase ${l === locale ? "border-green bg-green text-on-green" : "border-border"}`}>
+                      {l}
+                    </a>
+                  ))}
+                </div>
               </div>
-              <Drawer.Description className="sr-only">{siteName}</Drawer.Description>
-              <nav className="mt-3 flex flex-col font-heading text-2xl font-medium" aria-label={t.menu}>
-                {(["", ...PRIMARY, ...MORE, "alatura-te"] as const).map((p) => (
-                  <Link key={p} href={href(locale, p)} onClick={() => setOpen(false)} aria-current={current(p)} className="rounded-lg py-2 hover:text-green-text aria-[current=page]:underline aria-[current=page]:underline-offset-4">
-                    {p === "" ? t.home : t[p]}
-                  </Link>
-                ))}
-              </nav>
-              <div className="mt-auto pt-6"><Languages locale={locale} pathname={pathname} label={t.language} /></div>
             </Drawer.Content>
           </Drawer.Portal>
         </Drawer.Root>
-      </div>
-    </header>
+      </nav>
+    </>
   );
 }

@@ -47,5 +47,6 @@ export default async function Page({ params }: Props) {
   const found = resolve(l, slug);
   if (!found) notFound();
   const View = VIEWS[found.page];
-  return <View locale={found.locale} t={getDict(found.locale)} />;
+  // data-page lets CSS hide the floating "join" calls on the join page itself.
+  return <div data-page={found.page || "home"}><View locale={found.locale} t={getDict(found.locale)} /></div>;
 }

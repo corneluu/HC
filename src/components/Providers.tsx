@@ -17,7 +17,7 @@ export const useToday = () =>
 
 function ThemedToaster() {
   const { resolvedTheme } = useTheme();
-  return <Toaster position="bottom-center" theme={resolvedTheme === "dark" ? "dark" : "light"} />;
+  return <Toaster position="top-center" theme={resolvedTheme === "dark" ? "dark" : "light"} />;
 }
 
 export function Providers({ children }: { children: React.ReactNode }) {

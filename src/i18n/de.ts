@@ -22,9 +22,11 @@ export const de: Dict = {
     "alatura-te": "Mach mit", sustine: "Unterstützen", contact: "Kontakt", confidentialitate: "Datenschutz",
     more: "Mehr", menu: "Menü", closeMenu: "Menü schließen", skip: "Zum Inhalt springen",
     themeLight: "Zum hellen Design wechseln", themeDark: "Zum dunklen Design wechseln", language: "Sprache",
+    tabHome: "Start", tabEvents: "Termine", tabMusic: "Musik", tabGallery: "Galerie", tabMore: "Mehr", moreTitle: "Alle Seiten",
   },
   footer: {
     line: "Eine Familie, die singend betet.",
+    callTitle: "Für deine Stimme ist Platz",
     pages: "Seiten", follow: "Hier findest du uns auch", call: "Ruf uns an",
     credit: "Erstellt von Miron Cornel-Iosif",
     photos: "Fotos von unseren Konzerten und Tourneen.",
@@ -52,6 +54,10 @@ export const de: Dict = {
       nustiu: { name: "Weiß ich noch nicht", line: "Das ist völlig in Ordnung. Wir finden sie gemeinsam bei deiner ersten Probe." },
     },
     marqueeLabel: "Fotos von unseren Konzerten und Tourneen",
+    hubTitle: "Alles über uns, einen Klick entfernt",
+    hub: { despre: "Geschichte, Dirigent, Chorrat", evenimente: "Was kommt und wo wir gesungen haben", muzica: "Zwei Alben, 25 Lieder", galerie: "Konzerte und Tourneen in Bildern", "italia-2026": "Erinnerungen von unterwegs", "inctc-2026": "10 Chöre in Timișoara", aniversari: "5 Jahre, dann 6", "alatura-te": "Wir suchen nicht nur Stimmen. Wir suchen dich.", sustine: "Hilf uns, weiterzukommen", contact: "Ruf an oder schreib uns" },
+    allEvents: "Alle Termine", photosTitle: "Aus unserem Album", photosCta: "Zur ganzen Galerie",
+    musicTitle: "Zwei Alben zum Anhören", musicLead: "Tippe auf ein Cover, um den Player zu starten.", musicCta: "Unsere ganze Musik",
   },
   about: {
     h1: "Alles begann auf Zoom",
@@ -134,6 +140,7 @@ export const de: Dict = {
     artistTitle: "Unsere ganze Musik auf Spotify",
     videosTitle: "Zum Ansehen",
     channel: "Unser YouTube-Kanal",
+    openPlayer: "Album anhören", playerNote: "Der Player wird erst beim Antippen von Spotify geladen.",
   },
   gallery: {
     h1: "Wir, in Bildern",
@@ -162,6 +169,8 @@ export const de: Dict = {
     unconfigured: "Die Online-Anmeldung ist derzeit nicht aktiv. Ruf bitte den Dirigenten Iustin Călin an: 0753 590 671.",
     invalid: "Bitte prüfe die markierten Felder.",
     optional: "optional",
+    stepWord: "Schritt", stepOf: "von", next: "Weiter", back: "Zurück",
+    q: { name: "Wie heißt du?", phone: "Unter welcher Nummer erreichen wir dich?", age: "Wie alt bist du?", voice: "Welche Stimme hast du wohl?", more: "Hast du schon gesungen?", last: "Möchtest du uns noch etwas sagen?" },
     errors: {
       name: "Bitte nenne uns deinen Namen.",
       phone: "Bitte gib eine gültige Telefonnummer ein.",

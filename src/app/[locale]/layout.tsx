@@ -9,6 +9,7 @@ import { Providers } from "@/components/Providers";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { MotionRoot } from "@/components/MotionRoot";
+import { Curtain } from "@/components/Curtain";
 
 const display = Bricolage_Grotesque({ subsets: ["latin", "latin-ext"], variable: "--font-display", display: "swap" });
 const body = Instrument_Sans({ subsets: ["latin", "latin-ext"], variable: "--font-body", display: "swap" });
@@ -17,13 +18,20 @@ export const dynamicParams = false;
 export const generateStaticParams = () => LOCALES.map((locale) => ({ locale }));
 
 export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#0c1c18" },
+    { media: "(prefers-color-scheme: light)", color: "#f4f1e6" },
+    { media: "(prefers-color-scheme: dark)", color: "#07130f" },
   ],
 };
 
 export const metadata: Metadata = { metadataBase: new URL(`${SITE_URL}/`) };
+
+/* Static string, runs before paint. "js": reveals may hide content, scripting works.
+   "lite": the device says it is small (2 GB or less, 2 cores or fewer, data saver, 2G) or was measured slow earlier this visit. */
+const HEAD_SCRIPT = "(function(){var d=document.documentElement,n=navigator,c=n.connection||{};d.classList.add('js');try{if(sessionStorage.getItem('lite')==='1'||(n.deviceMemory&&n.deviceMemory<=2)||(n.hardwareConcurrency&&n.hardwareConcurrency<=2)||c.saveData||/(^|-)2g$/.test(c.effectiveType||''))d.classList.add('lite')}catch(e){}})()";
 
 export default async function LocaleLayout({ children, params }: { children: React.ReactNode; params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -32,18 +40,18 @@ export default async function LocaleLayout({ children, params }: { children: Rea
   return (
     <html lang={locale} className={`${display.variable} ${body.variable}`} suppressHydrationWarning>
       <head>
-        {/* Static string: reveal animations only hide content once scripting is known to work. */}
-        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
+        <script dangerouslySetInnerHTML={{ __html: HEAD_SCRIPT }} />
       </head>
       <body>
         <Providers>
-          <a href="#continut" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-yellow focus:p-3 focus:text-on-yellow">
+          <a href="#continut" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[80] focus:rounded-lg focus:bg-yellow focus:p-3 focus:text-on-yellow">
             {t.nav.skip}
           </a>
-          <Header locale={locale} t={t.nav} siteName={t.site.name} />
+          <Header locale={locale} t={t.nav} siteName={t.site.name} joinLabel={t.home.ctaJoin} />
           <main id="continut">{children}</main>
           <Footer locale={locale} t={t} />
           <MotionRoot />
+          <Curtain />
         </Providers>
       </body>
     </html>

@@ -1,13 +1,16 @@
 "use client";
+/* eslint-disable @next/next/no-img-element -- pre-sized WebP logo in a static export */
 
 import { useCallback, useEffect, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
+import { CalendarDays, ExternalLink, Images, LogOut, Play, Settings, Users } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { getSupabase, supabaseConfigured } from "@/lib/supabase";
-import { Crud, type Field } from "./Crud";
+import { todayInTimisoara } from "@/lib/events";
+import { asset, formatDate } from "@/lib/site";
+import { Crud, fieldInput, fieldLabel, type Field, type Row } from "./Crud";
 import { PhotosManager } from "./PhotosManager";
 import { SettingsForm } from "./SettingsForm";
 
@@ -42,8 +45,34 @@ const ALBUM_FIELDS: Field[] = [
   { key: "description", label: "Descriere", type: "ltext" },
 ];
 
-const TABS = ["Evenimente", "Consiliu", "Videoclipuri", "Galerie", "Setări"] as const;
-type Tab = (typeof TABS)[number];
+const TABS = [
+  { id: "events", label: "Evenimente", Icon: CalendarDays, help: "Doar concerte și festivaluri. Site-ul le ordonează după dată; săgețile contează doar între evenimentele din aceeași zi." },
+  { id: "council", label: "Consiliu", Icon: Users, help: "Cei care apar pe pagina Despre, în ordinea de aici. Fără portret, site-ul arată inițialele." },
+  { id: "videos", label: "Video", Icon: Play, help: "Videoclipurile de pe pagina Muzică. Primul din listă apare cel mai mare." },
+  { id: "gallery", label: "Galerie", Icon: Images, help: "Întâi albumele, apoi fotografiile din fiecare." },
+  { id: "settings", label: "Setări", Icon: Settings, help: "Donații, cifrele de pe prima pagină și datele dirijorului." },
+] as const;
+type Tab = (typeof TABS)[number]["id"];
+
+const ro = (v: unknown) => (v as { ro?: string })?.ro ?? "";
+
+/** A concert only counts on the home page once it is confirmed, so past ones still marked "announced" stand out. */
+function eventBadge(row: Row) {
+  if (row.status === "confirmed") return { text: "Confirmat" };
+  const last = String(row.end_date || row.date);
+  return last < todayInTimisoara() ? { text: "A trecut: de confirmat", warn: true } : { text: "Anunțat" };
+}
+
+function Shell({ children }: { children: React.ReactNode }) {
+  return (
+    <main className="frame grid min-h-svh content-center py-10">
+      <div className="tile tile-paper pad mx-auto w-full max-w-md">
+        <span className="tile-logo mb-5 size-14 rounded-lg"><img src={asset("/brand/kite-96.webp")} alt="" width={68} height={96} className="h-10 w-auto" /></span>
+        {children}
+      </div>
+    </main>
+  );
+}
 
 function Login({ onError }: { onError: (m: string) => void }) {
   const [email, setEmail] = useState("");
@@ -57,30 +86,35 @@ function Login({ onError }: { onError: (m: string) => void }) {
     if (error) onError("Autentificare eșuată. Verifică adresa și parola.");
   }
   return (
-    <form onSubmit={submit} className="tile grid max-w-md gap-4 bg-background p-6">
-      <h1 className="text-4xl">Administrare</h1>
-      <div>
-        <Label htmlFor="email" className="text-base">Email</Label>
-        <Input id="email" type="email" autoComplete="username" required className="mt-1.5 h-12 text-base" value={email} onChange={(e) => setEmail(e.target.value)} />
-      </div>
-      <div>
-        <Label htmlFor="password" className="text-base">Parolă</Label>
-        <Input id="password" type="password" autoComplete="current-password" required className="mt-1.5 h-12 text-base" value={password} onChange={(e) => setPassword(e.target.value)} />
-      </div>
-      <Button type="submit" disabled={busy} className="h-12 rounded-full text-base font-semibold">{busy ? "Se verifică..." : "Intră"}</Button>
-    </form>
+    <Shell>
+      <form onSubmit={submit} className="grid gap-4">
+        <h1 className="title-section">Administrare</h1>
+        <p className="text-muted-foreground">Doar pentru consiliul corului.</p>
+        <div>
+          <Label htmlFor="email" className={fieldLabel}>Email</Label>
+          <Input id="email" type="email" autoComplete="username" required className={fieldInput} value={email} onChange={(e) => setEmail(e.target.value)} />
+        </div>
+        <div>
+          <Label htmlFor="password" className={fieldLabel}>Parolă</Label>
+          <Input id="password" type="password" autoComplete="current-password" required className={fieldInput} value={password} onChange={(e) => setPassword(e.target.value)} />
+        </div>
+        <button type="submit" disabled={busy} className="btn btn-primary">{busy ? "Se verifică..." : "Intră"}</button>
+      </form>
+    </Shell>
   );
 }
 
 export function AdminApp() {
   const [session, setSession] = useState<Session | null>(null);
+  const [checked, setChecked] = useState(!supabaseConfigured);
   const [allowed, setAllowed] = useState<boolean | null>(null);
-  const [tab, setTab] = useState<Tab>("Evenimente");
+  const [tab, setTab] = useState<Tab>("events");
+  const [albumsVersion, setAlbumsVersion] = useState(0);
 
   useEffect(() => {
     if (!supabaseConfigured) return;
     const db = getSupabase();
-    db.auth.getSession().then(({ data }) => setSession(data.session));
+    db.auth.getSession().then(({ data }) => { setSession(data.session); setChecked(true); });
     const { data } = db.auth.onAuthStateChange((_event, s) => setSession(s));
     return () => data.subscription.unsubscribe();
   }, []);
@@ -101,62 +135,83 @@ export function AdminApp() {
 
   if (!supabaseConfigured) {
     return (
-      <main className="frame py-10">
-        <div className="tile max-w-xl bg-background p-6">
-          <h1 className="text-4xl">Administrare</h1>
-          <p className="mt-4">Supabase nu este configurat încă. Urmează pașii din README și setează NEXT_PUBLIC_SUPABASE_URL și NEXT_PUBLIC_SUPABASE_ANON_KEY.</p>
-        </div>
-      </main>
+      <Shell>
+        <h1 className="title-section">Administrare</h1>
+        <p className="mt-4">Panoul nu este conectat încă la baza de date. Urmează pașii din README: creează proiectul Supabase, apoi setează adresa lui și cheia publică.</p>
+      </Shell>
     );
   }
 
-  if (!session) return <main className="frame py-10"><Login onError={(m) => toast.error(m)} /></main>;
+  if (!checked) return <Shell><p>Se încarcă...</p></Shell>;
+  if (!session) return <Login onError={(m) => toast.error(m)} />;
 
   if (allowed === false) {
     return (
-      <main className="frame py-10">
-        <div className="tile max-w-xl bg-background p-6">
-          <h1 className="text-4xl">Fără acces</h1>
-          <p className="mt-4">Contul tău nu este în lista administratorilor.</p>
-          <Button onClick={logout} className="mt-5 h-11 rounded-full px-5 text-base">Ieși din cont</Button>
-        </div>
-      </main>
+      <Shell>
+        <h1 className="title-section">Fără acces</h1>
+        <p className="mt-4">Contul {session.user.email} nu este în lista administratorilor.</p>
+        <button type="button" onClick={logout} className="btn btn-line mt-5">Ieși din cont</button>
+      </Shell>
     );
   }
 
+  const current = TABS.find((t) => t.id === tab)!;
+  const pick = (id: Tab) => { setTab(id); scrollTo(0, 0); };
+
   return (
-    <main className="frame py-5">
-      <header className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-3xl">Administrare</h1>
-        <div className="flex items-center gap-3">
-          <span className="hidden text-base sm:inline">{session.user.email}</span>
-          <Button variant="outline" onClick={logout} className="h-11 rounded-full px-5 text-base">Ieși din cont</Button>
+    <>
+      <header className="site-header" data-scrolled="true">
+        <div className="frame flex items-center justify-between gap-2 py-2.5">
+          <span className="flex min-w-0 items-center gap-2.5 font-heading text-lg font-semibold leading-none">
+            <span className="tile-logo size-11 shrink-0 rounded-lg"><img src={asset("/brand/kite-96.webp")} alt="" width={68} height={96} className="h-8 w-auto" /></span>
+            <span className="truncate">Administrare</span>
+          </span>
+          <nav className="hidden items-center gap-1 lg:flex" aria-label="Secțiuni">
+            {TABS.map(({ id, label }) => (
+              <button key={id} type="button" aria-current={tab === id ? "page" : undefined} onClick={() => pick(id)} className="rounded-lg px-3 py-2 font-medium hover:bg-muted aria-[current=page]:bg-green aria-[current=page]:text-on-green">{label}</button>
+            ))}
+          </nav>
+          <div className="flex shrink-0 items-center gap-1">
+            <span className="mr-2 hidden max-w-56 truncate text-[0.9375rem] text-muted-foreground xl:inline">{session.user.email}</span>
+            <a href={asset("/ro/")} target="_blank" rel="noopener" aria-label="Deschide site-ul" title="Deschide site-ul" className="grid size-11 place-items-center rounded-lg hover:bg-muted"><ExternalLink className="size-5" /></a>
+            <button type="button" onClick={logout} aria-label="Ieși din cont" title="Ieși din cont" className="grid size-11 place-items-center rounded-lg hover:bg-muted"><LogOut className="size-5" /></button>
+          </div>
         </div>
       </header>
-      <nav className="mt-4 flex gap-1 overflow-x-auto pb-1" aria-label="Secțiuni">
-        {TABS.map((t) => (
-          <button key={t} type="button" aria-current={tab === t ? "page" : undefined} onClick={() => setTab(t)} className={`h-11 shrink-0 rounded-full px-4 font-medium ${tab === t ? "bg-primary text-primary-foreground" : "bg-background"}`}>{t}</button>
+
+      <main className="frame max-w-4xl pb-10 pt-6">
+        <h1 className="title-section">{current.label === "Video" ? "Videoclipuri" : current.label}</h1>
+        <p className="mb-5 mt-2 max-w-[60ch] text-muted-foreground">{current.help}</p>
+        {allowed === null ? <p className="py-4 text-muted-foreground">Se încarcă...</p> : null}
+        {allowed && tab === "events" ? (
+          <Crud
+            table="events" folder="afise" fields={EVENT_FIELDS} addLabel="Adaugă un eveniment" badge={eventBadge}
+            heading={(r) => ro(r.title)}
+            detail={(r) => (r.date ? formatDate(String(r.date), "ro", { day: "numeric", month: "long", year: "numeric" }) : "")}
+            defaults={{ kind: "concert", status: "announced", title: { ro: "" }, place: { ro: "" }, note: { ro: "" } }}
+          />
+        ) : null}
+        {allowed && tab === "council" ? <Crud table="council_members" folder="portrete" fields={COUNCIL_FIELDS} addLabel="Adaugă un membru" heading={(r) => String(r.name ?? "")} detail={(r) => ro(r.role)} thumb={(r) => (r.portrait as string) || null} defaults={{ role: { ro: "" }, description: { ro: "" } }} /> : null}
+        {allowed && tab === "videos" ? <Crud table="videos" fields={VIDEO_FIELDS} addLabel="Adaugă un videoclip" heading={(r) => ro(r.title)} detail={(r) => `youtu.be/${String(r.youtube_id ?? "")}`} defaults={{ title: { ro: "" } }} /> : null}
+        {allowed && tab === "gallery" ? (
+          <>
+            <h2 className="eyebrow mb-3"><span className="romb" aria-hidden />Albume</h2>
+            <Crud table="gallery_albums" fields={ALBUM_FIELDS} addLabel="Adaugă un album" heading={(r) => ro(r.title)} detail={(r) => ro(r.description)} defaults={{ title: { ro: "" }, description: { ro: "" } }} onChanged={() => setAlbumsVersion((v) => v + 1)} />
+            <h2 className="eyebrow mb-3 mt-10"><span className="romb" aria-hidden />Fotografii</h2>
+            <PhotosManager refreshKey={albumsVersion} />
+          </>
+        ) : null}
+        {allowed && tab === "settings" ? <SettingsForm /> : null}
+      </main>
+
+      <nav className="tabbar" aria-label="Secțiuni">
+        {TABS.map(({ id, label, Icon }) => (
+          <button key={id} type="button" aria-current={tab === id ? "page" : undefined} onClick={() => pick(id)} className="tab">
+            <Icon className="size-[1.375rem]" aria-hidden />
+            <span>{label}</span>
+          </button>
         ))}
       </nav>
-      <div className="mt-5">
-        {allowed === null ? <p>Se încarcă...</p> : null}
-        {allowed && tab === "Evenimente" ? (
-          <>
-            <p className="mb-3 text-base">Doar concerte și festivaluri. Site-ul le ordonează după dată; săgețile contează doar între evenimentele din aceeași zi.</p>
-            <Crud table="events" folder="afise" fields={EVENT_FIELDS} heading={(r) => `${r.date} · ${(r.title as { ro: string })?.ro ?? ""}`} defaults={{ kind: "concert", status: "announced", title: { ro: "" }, place: { ro: "" }, note: { ro: "" } }} />
-          </>
-        ) : null}
-        {allowed && tab === "Consiliu" ? <Crud table="council_members" folder="portrete" fields={COUNCIL_FIELDS} heading={(r) => String(r.name)} defaults={{ role: { ro: "" }, description: { ro: "" } }} /> : null}
-        {allowed && tab === "Videoclipuri" ? <Crud table="videos" fields={VIDEO_FIELDS} heading={(r) => (r.title as { ro: string })?.ro ?? ""} defaults={{ title: { ro: "" } }} /> : null}
-        {allowed && tab === "Galerie" ? (
-          <>
-            <h2 className="mb-3 text-2xl">Albume</h2>
-            <Crud table="gallery_albums" fields={ALBUM_FIELDS} heading={(r) => (r.title as { ro: string })?.ro ?? ""} defaults={{ title: { ro: "" }, description: { ro: "" } }} />
-            <PhotosManager />
-          </>
-        ) : null}
-        {allowed && tab === "Setări" ? <SettingsForm /> : null}
-      </div>
-    </main>
+    </>
   );
 }

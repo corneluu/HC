@@ -24,9 +24,11 @@ export const ro = {
     "alatura-te": "Alătură-te", sustine: "Susține", contact: "Contact", confidentialitate: "Confidențialitate",
     more: "Mai multe", menu: "Meniu", closeMenu: "Închide meniul", skip: "Sari la conținut",
     themeLight: "Treci la tema luminoasă", themeDark: "Treci la tema întunecată", language: "Limba",
+    tabHome: "Acasă", tabEvents: "Concerte", tabMusic: "Muzică", tabGallery: "Galerie", tabMore: "Mai mult", moreTitle: "Toate paginile",
   },
   footer: {
     line: "O familie care se roagă cântând.",
+    callTitle: "Vocea ta are loc aici",
     pages: "Pagini", follow: "Ne găsești și aici", call: "Sună-ne",
     credit: "Realizat de Miron Cornel-Iosif",
     photos: "Fotografii de la concertele și din turneele noastre.",
@@ -60,6 +62,10 @@ export const ro = {
       nustiu: { name: "Nu știu încă", line: "Nu-i nimic, chiar nu-i nimic. O găsim împreună la prima repetiție." },
     },
     marqueeLabel: "Fotografii de la concertele și din turneele noastre",
+    hubTitle: "Tot ce suntem, la un clic",
+    hub: { despre: "Povestea, dirijorul, consiliul", evenimente: "Ce urmează și unde am cântat", muzica: "Două albume, 25 de piese", galerie: "Concerte și turnee, în poze", "italia-2026": "Amintiri de pe drum", "inctc-2026": "10 coruri la Timișoara", aniversari: "5 ani, apoi 6", "alatura-te": "Nu căutăm doar voci. Te căutăm pe tine.", sustine: "Ajută-ne să ajungem mai departe", contact: "Sună-ne sau scrie-ne" },
+    allEvents: "Toate evenimentele", photosTitle: "Din albumul nostru", photosCta: "Vezi toată galeria",
+    musicTitle: "Două albume de ascultat", musicLead: "Atinge o copertă și pornește playerul.", musicCta: "Toată muzica",
   },
   about: {
     h1: "O poveste care a început pe Zoom",
@@ -142,6 +148,7 @@ export const ro = {
     artistTitle: "Toată muzica noastră, pe Spotify",
     videosTitle: "De văzut",
     channel: "Canalul nostru de YouTube",
+    openPlayer: "Ascultă albumul", playerNote: "Playerul se încarcă de pe Spotify abia când apeși.",
   },
   gallery: {
     h1: "Noi, în imagini",
@@ -173,6 +180,8 @@ export const ro = {
     unconfigured: "Momentan, înscrierea online nu este activă. Sună-l pe dirijor, Iustin Călin, la 0753 590 671.",
     invalid: "Mai verifică câmpurile marcate.",
     optional: "opțional",
+    stepWord: "Pasul", stepOf: "din", next: "Mai departe", back: "Înapoi",
+    q: { name: "Cum te cheamă?", phone: "La ce număr te sunăm?", age: "Câți ani ai?", voice: "Ce voce crezi că ai?", more: "Ai mai cântat până acum?", last: "Mai e ceva ce vrei să știm?" },
     errors: {
       name: "Scrie-ne numele tău.",
       phone: "Scrie un număr de telefon valid.",
