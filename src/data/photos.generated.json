@@ -1,0 +1,101 @@
+{
+ "concert-5-ani/grup-scena": {
+  "w": 5184,
+  "h": 3456,
+  "widths": [
+   640,
+   1200,
+   1920
+  ],
+  "color": "rgb(8,8,8)"
+ },
+ "concert-5-ani/grup-aplauze": {
+  "w": 5184,
+  "h": 3456,
+  "widths": [
+   640,
+   1200,
+   1920
+  ],
+  "color": "rgb(8,8,8)"
+ },
+ "concert-5-ani/alelia-dirijat": {
+  "w": 5184,
+  "h": 3456,
+  "widths": [
+   640,
+   1200,
+   1920
+  ],
+  "color": "rgb(8,8,8)"
+ },
+ "concert-5-ani/alelia-cor": {
+  "w": 5184,
+  "h": 3456,
+  "widths": [
+   640,
+   1200,
+   1920
+  ],
+  "color": "rgb(8,8,8)"
+ },
+ "concert-5-ani/voci-si-band": {
+  "w": 5184,
+  "h": 3456,
+  "widths": [
+   640,
+   1200,
+   1920
+  ],
+  "color": "rgb(8,8,8)"
+ },
+ "concert-5-ani/voci-si-band-2": {
+  "w": 5184,
+  "h": 3456,
+  "widths": [
+   640,
+   1200,
+   1920
+  ],
+  "color": "rgb(40,40,56)"
+ },
+ "concert-5-ani/baieti-cantand": {
+  "w": 5184,
+  "h": 3456,
+  "widths": [
+   640,
+   1200,
+   1920
+  ],
+  "color": "rgb(56,56,88)"
+ },
+ "concert-5-ani/baieti-grup": {
+  "w": 5184,
+  "h": 3456,
+  "widths": [
+   640,
+   1200,
+   1920
+  ],
+  "color": "rgb(72,72,88)"
+ },
+ "concert-5-ani/sala-mare": {
+  "w": 5184,
+  "h": 3456,
+  "widths": [
+   640,
+   1200,
+   1920
+  ],
+  "color": "rgb(8,8,8)"
+ },
+ "dirijor/la-pupitru": {
+  "w": 1300,
+  "h": 1250,
+  "widths": [
+   640,
+   1200
+  ],
+  "color": "rgb(24,24,24)"
+ }
+}
