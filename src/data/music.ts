@@ -13,8 +13,7 @@ export const MUSIC_ALBUMS = [
     title: "Your love makes me sing",
     released: "2025-10-26",
     tracks: 10,
-    // The research could not confirm a Spotify album page for this one, so no embed: never guess an id.
-    spotifyAlbumId: null,
+    spotifyAlbumId: "3szC4Bc2oBt6Cr8umD26Eo",
     apple: "https://music.apple.com/us/album/your-love-makes-me-sing/1849552260",
     deezer: "https://www.deezer.com/album/844759672",
   },
