@@ -70,7 +70,7 @@ export const de: Dict = {
     singersCaption: "Wir alle beim Jubiläumskonzert 2025.",
     conductorTitle: "Unser Dirigent",
     conductorRole: "Gründer und Dirigent",
-    conductorCaption: "Am Dirigentenpult beim Jubiläumskonzert 2025.",
+    conductorCaption: "Iustin Călin dirigiert im Konzert. Foto: Eugen Ivuț.",
     councilTitle: "Der Chorrat",
     councilLead: "Jede Sängerin und jeder Sänger zählt. Jede Stimme, jedes „Ich bin da“ bei der Probe, jeder gemeinsame Weg. Wir acht vom Rat empfinden es als Ehre, allen anderen zu dienen, damit alle Raum zum Singen haben und sich zu Hause fühlen.",
     ageSuffix: "Jahre",

@@ -22,7 +22,8 @@ const PICKS = {
   'concert-5-ani/baieti-cantand': { file: 'IMG_1325.JPG' },
   'concert-5-ani/baieti-grup': { file: 'IMG_1350.JPG' },
   'concert-5-ani/sala-mare': { file: 'IMG_1292.JPG' },
-  'dirijor/la-pupitru': { file: 'IMG_1357.JPG', extract: { left: 2350, top: 2100, width: 1300, height: 1250 } },
+  // Photo by Eugen Ivuț, given by the owner; the crop leaves out his watermark, so the caption credits him.
+  'dirijor/portret': { file: 'D:/Media/Photos/Harmonia Christi_files/dirijor/foto-eugen-ivut.jpg', extract: { left: 370, top: 200, width: 868, height: 868 } },
   'italia-2026/grup-lac': { file: 'IMG_3425.JPG', italy: true },
   'italia-2026/cor-altar': { file: 'IMG_2555.JPG', italy: true },
   'italia-2026/grup-panorama': { file: 'IMG_0052.JPG', italy: true },
@@ -49,7 +50,7 @@ const PICKS = {
 const manifest = fs.existsSync(manifestPath) ? JSON.parse(fs.readFileSync(manifestPath, 'utf8')) : {};
 for (const [name, { file, extract, italy }] of Object.entries(PICKS)) {
   if (manifest[name]) continue;
-  let base = sharp(path.join(italy ? italyDir : concertDir, file)).rotate();
+  let base = sharp(path.isAbsolute(file) ? file : path.join(italy ? italyDir : concertDir, file)).rotate();
   if (extract) base = sharp(await base.toBuffer()).extract(extract);
   const buf = await base.toBuffer();
   const meta = await sharp(buf).metadata();

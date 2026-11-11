@@ -130,7 +130,7 @@ export const seed: SiteData = {
       { name: "Međugorje", year: null },
     ],
     conductor_name: "Iustin Călin",
-    conductor_photo: "dirijor/la-pupitru",
+    conductor_photo: "dirijor/portret",
     conductor_bio: L(
       "Prof. Iustin Călin este cel care a adunat corul, în timpul pandemiei, și de atunci îl dirijează. Predă muzica la Liceul Teologic Romano-Catolic Gerhardinum din Timișoara și este președintele Asociației Culturale „Artistul de Mâine”. În 2024 ne-a condus în primul turneu național, prin Moldova, unde a cântat și arii de operă alături de soprana Maria Miler. Tot de la el a pornit, în septembrie 2025, propunerea primei Întâlniri Naționale a Corurilor de Tineret Catolice, găzduită la Timișoara în iulie 2026.",
       "Prof. Iustin Călin is the one who brought the choir together during the pandemic, and he has conducted it ever since. He teaches music at the Gerhardinum Roman Catholic Theological High School in Timișoara and is president of the „Artistul de Mâine” Cultural Association. In 2024 he led us on our first national tour, through Moldova, where he also sang opera arias with soprano Maria Miler. It was also his proposal, in September 2025, that led to the first National Meeting of Catholic Youth Choirs, hosted in Timișoara in July 2026.",

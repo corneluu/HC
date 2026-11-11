@@ -78,7 +78,7 @@ export const ro = {
     singersCaption: "Noi toți, la concertul aniversar din 2025.",
     conductorTitle: "Dirijorul nostru",
     conductorRole: "fondator și dirijor",
-    conductorCaption: "La pupitru, la concertul aniversar din 2025.",
+    conductorCaption: "Iustin Călin, dirijând în concert. Foto: Eugen Ivuț.",
     councilTitle: "Consiliul corului",
     councilLead: "Fiecare corist contează. Fiecare voce, fiecare „sunt aici” spus la repetiție, fiecare drum făcut împreună. Cei opt din consiliu se simt onorați să îi slujească pe toți ceilalți, ca fiecare să aibă loc să cânte și să se simtă acasă.",
     ageSuffix: "ani",

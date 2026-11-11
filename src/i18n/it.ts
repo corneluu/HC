@@ -70,7 +70,7 @@ export const it: Dict = {
     singersCaption: "Tutti noi, al concerto per l'anniversario del 2025.",
     conductorTitle: "Il nostro direttore",
     conductorRole: "fondatore e direttore",
-    conductorCaption: "Sul podio, al concerto per l'anniversario del 2025.",
+    conductorCaption: "Iustin Călin dirige in concerto. Foto: Eugen Ivuț.",
     councilTitle: "Il consiglio del coro",
     councilLead: "Ogni corista conta. Ogni voce, ogni “ci sono” detto alle prove, ogni strada percorsa insieme. Noi otto del consiglio ci sentiamo onorati di servire tutti gli altri, perché ognuno abbia spazio per cantare e si senta a casa.",
     ageSuffix: "anni",
