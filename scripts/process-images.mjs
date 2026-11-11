@@ -1,11 +1,12 @@
-// Usage: node scripts/process-images.mjs "<folder with originals>"
+// Usage: node scripts/process-images.mjs "<concert originals>" "<Italy tour originals>"
+// Entries already in the manifest are kept; delete one from it to regenerate that image.
 // Writes resized AVIF/WebP to public/photos (sharp drops EXIF/GPS unless told otherwise).
 import sharp from 'sharp';
 import fs from 'node:fs';
 import path from 'node:path';
 
-const source = process.argv[2];
-if (!source) throw new Error('Pass the folder with the concert originals.');
+const [concertDir, italyDir] = process.argv.slice(2);
+if (!concertDir || !italyDir) throw new Error('Pass the concert folder and the Italy tour folder.');
 const WIDTHS = [640, 1200, 1920];
 const out = 'public/photos';
 const manifestPath = 'src/data/photos.generated.json';
@@ -22,11 +23,33 @@ const PICKS = {
   'concert-5-ani/baieti-grup': { file: 'IMG_1350.JPG' },
   'concert-5-ani/sala-mare': { file: 'IMG_1292.JPG' },
   'dirijor/la-pupitru': { file: 'IMG_1357.JPG', extract: { left: 2350, top: 2100, width: 1300, height: 1250 } },
+  'italia-2026/grup-lac': { file: 'IMG_3425.JPG', italy: true },
+  'italia-2026/cor-altar': { file: 'IMG_2555.JPG', italy: true },
+  'italia-2026/grup-panorama': { file: 'IMG_0052.JPG', italy: true },
+  'italia-2026/voci-aproape': { file: 'IMG_0744.JPG', italy: true },
+  'italia-2026/grup-munti': { file: 'IMG_2677.JPG', italy: true },
+  'italia-2026/in-biserica': { file: 'IMG_0750.JPG', italy: true },
+  'italia-2026/supa': { file: 'IMG_1794.JPG', italy: true },
+  'italia-2026/esarfe-galbene': { file: 'IMG_2681.JPG', italy: true },
+  'italia-2026/bratele-sus': { file: 'IMG_2393.JPG', italy: true },
+  'italia-2026/aplauze': { file: 'IMG_1904.JPG', italy: true },
+  'italia-2026/baieti-negru': { file: 'IMG_2330.JPG', italy: true },
+  'italia-2026/cu-bagajele': { file: 'IMG_0226.JPG', italy: true },
+  'italia-2026/biserica-plina': { file: 'IMG_2467.JPG', italy: true },
+  'italia-2026/grup-altar': { file: 'IMG_1062.JPG', italy: true },
+  'italia-2026/servim': { file: 'IMG_1891.JPG', italy: true },
+  'italia-2026/patru-voci': { file: 'IMG_2475.JPG', italy: true },
+  'italia-2026/seara-impreuna': { file: 'IMG_2921.JPG', italy: true },
+  'italia-2026/concert-din-banci': { file: 'IMG_0704.JPG', italy: true },
+  'italia-2026/cantam-la-masa': { file: 'IMG_1902.JPG', italy: true },
+  'italia-2026/veselie': { file: 'IMG_2898.JPG', italy: true },
+  'italia-2026/vesminte': { file: 'IMG_1079.JPG', italy: true },
 };
 
-const manifest = {};
-for (const [name, { file, extract }] of Object.entries(PICKS)) {
-  let base = sharp(path.join(source, file)).rotate();
+const manifest = fs.existsSync(manifestPath) ? JSON.parse(fs.readFileSync(manifestPath, 'utf8')) : {};
+for (const [name, { file, extract, italy }] of Object.entries(PICKS)) {
+  if (manifest[name]) continue;
+  let base = sharp(path.join(italy ? italyDir : concertDir, file)).rotate();
   if (extract) base = sharp(await base.toBuffer()).extract(extract);
   const buf = await base.toBuffer();
   const meta = await sharp(buf).metadata();

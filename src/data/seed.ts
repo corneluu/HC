@@ -65,9 +65,14 @@ const council: CouncilMember[] = [
 ];
 
 const CONCERT_ALBUM = "concert-5-ani";
+const ITALY_ALBUM = "italia-2026";
 
 const photo = (src: string, alt: LText, position: number) => ({
   id: src.replace("/", "-"), album_id: CONCERT_ALBUM, src: `concert-5-ani/${src}`, alt, width: null, height: null, position,
+});
+
+const italyPhoto = (src: string, alt: LText, position: number) => ({
+  id: `${ITALY_ALBUM}-${src}`, album_id: ITALY_ALBUM, src: `${ITALY_ALBUM}/${src}`, alt, width: null, height: null, position,
 });
 
 export const seed: SiteData = {
@@ -80,6 +85,7 @@ export const seed: SiteData = {
   ],
   albums: [
     { id: CONCERT_ALBUM, slug: CONCERT_ALBUM, title: L("Concertul aniversar de 5 ani", "The 5th anniversary concert", "Il concerto per i 5 anni", "Das Konzert zum 5. Jubiläum"), description: L("Cinema Timiș, 20 iunie 2025", "Cinema Timiș, 20 June 2025", "Cinema Timiș, 20 giugno 2025", "Cinema Timiș, 20. Juni 2025"), position: 0 },
+    { id: ITALY_ALBUM, slug: ITALY_ALBUM, title: L("Turneul din Italia", "The tour of Italy", "La tournée in Italia", "Die Italien-Tournee"), description: L("Momente de pe drum, în biserici și la masă", "Moments on the road, in churches and around the table", "Momenti in viaggio, nelle chiese e a tavola", "Momente unterwegs, in Kirchen und am Tisch"), position: 1 },
   ],
   photos: [
     photo("grup-scena", L("Tot corul și bandul pe scenă, sub numele Harmonia Christi proiectat în spate", "The whole choir and band on stage, with the name Harmonia Christi projected behind them", "Tutto il coro e la band sul palco, con il nome Harmonia Christi proiettato alle spalle", "Der ganze Chor und die Band auf der Bühne, dahinter der projizierte Name Harmonia Christi"), 0),
@@ -91,6 +97,27 @@ export const seed: SiteData = {
     photo("alelia-cor", L("Cor și instrumentiști sub proiecția Aleluia", "Choir and instrumentalists under the Alleluia projection", "Coro e strumentisti sotto la proiezione Alleluia", "Chor und Instrumentalisten unter der Halleluja-Projektion"), 6),
     photo("voci-si-band-2", L("Voci și instrumente într-un singur cânt", "Voices and instruments in a single song", "Voci e strumenti in un solo canto", "Stimmen und Instrumente in einem einzigen Lied"), 7),
     photo("sala-mare", L("Cuvânt adresat publicului, cu tot corul în spate", "A word to the audience, with the whole choir behind", "Una parola al pubblico, con tutto il coro alle spalle", "Ein Wort an das Publikum, der ganze Chor dahinter"), 8),
+    italyPhoto("grup-lac", L("Toți împreună pe malul unui lac, cu munții în spate", "All of us together on a lakeshore, with mountains behind", "Tutti insieme sulla riva di un lago, con le montagne alle spalle", "Wir alle zusammen am Ufer eines Sees, dahinter die Berge"), 0),
+    italyPhoto("cor-altar", L("Corul în alb și galben, în fața altarului, la concert", "The choir in white and yellow before the altar, in concert", "Il coro in bianco e giallo davanti all'altare, durante il concerto", "Der Chor in Weiß und Gelb vor dem Altar, beim Konzert"), 1),
+    italyPhoto("grup-panorama", L("Fotografie de grup deasupra unei văi, cu dealuri în zare", "Group photo above a valley, with hills on the horizon", "Foto di gruppo sopra una valle, con le colline all'orizzonte", "Gruppenfoto über einem Tal, am Horizont die Hügel"), 2),
+    italyPhoto("voci-aproape", L("Cântăm strânși unii lângă alții, cu partiturile în mână", "Singing shoulder to shoulder, scores in hand", "Cantiamo stretti gli uni agli altri, con gli spartiti in mano", "Wir singen dicht beieinander, die Noten in der Hand"), 3),
+    italyPhoto("grup-munti", L("Grupul nostru în piață, sub munții înzăpeziți", "Our group in a square, beneath snowy mountains", "Il nostro gruppo in piazza, sotto le montagne innevate", "Unsere Gruppe auf einem Platz, unter verschneiten Bergen"), 4),
+    italyPhoto("in-biserica", L("Cântăm în biserică, în haine de zi, cu claviatura lângă noi", "Singing in church in everyday clothes, with the keyboard beside us", "Cantiamo in chiesa con gli abiti di tutti i giorni, accanto alla tastiera", "Wir singen in Alltagskleidung in der Kirche, neben uns das Keyboard"), 5),
+    italyPhoto("supa", L("O soră ne împarte supa la bucătărie", "A sister serving us soup in the kitchen", "Una suora ci serve la minestra in cucina", "Eine Schwester teilt uns in der Küche die Suppe aus"), 6),
+    italyPhoto("esarfe-galbene", L("Corul în alb și negru, cu eșarfe galbene, într-o piață de la munte", "The choir in black and white with yellow scarves, in a mountain square", "Il coro in bianco e nero con le sciarpe gialle, in una piazza di montagna", "Der Chor in Schwarz und Weiß mit gelben Tüchern auf einem Platz in den Bergen"), 7),
+    italyPhoto("bratele-sus", L("Două coriste cântă cu brațele ridicate, în biserică", "Two singers with their arms raised, in church", "Due coriste cantano con le braccia alzate, in chiesa", "Zwei Sängerinnen mit erhobenen Armen in der Kirche"), 8),
+    italyPhoto("aplauze", L("Cântăm și bătem din palme în sala de mese", "Singing and clapping in the dining hall", "Cantiamo e battiamo le mani in sala da pranzo", "Wir singen und klatschen im Speisesaal"), 9),
+    italyPhoto("baieti-negru", L("Băieții corului în negru, gata să cânte", "The men of the choir in black, ready to sing", "I ragazzi del coro in nero, pronti a cantare", "Die Männer des Chors in Schwarz, bereit zum Singen"), 10),
+    italyPhoto("cu-bagajele", L("Cu bagajele în piață, în fața bisericii", "With our luggage in the square, in front of the church", "Con i bagagli in piazza, davanti alla chiesa", "Mit dem Gepäck auf dem Platz vor der Kirche"), 11),
+    italyPhoto("biserica-plina", L("O biserică plină, văzută de lângă cor", "A full church, seen from beside the choir", "Una chiesa piena, vista da accanto al coro", "Eine volle Kirche, vom Chor aus gesehen"), 12),
+    italyPhoto("grup-altar", L("Fotografie de grup în fața altarului, într-o biserică bogat împodobită", "Group photo before the altar of a richly decorated church", "Foto di gruppo davanti all'altare di una chiesa riccamente decorata", "Gruppenfoto vor dem Altar einer reich geschmückten Kirche"), 13),
+    italyPhoto("servim", L("Băieții pun mâncarea în boluri pentru ceilalți", "The boys dishing up bowls for everyone else", "I ragazzi riempiono le ciotole per gli altri", "Die Jungen füllen die Schüsseln für die anderen"), 14),
+    italyPhoto("patru-voci", L("Patru voci bărbătești la același microfon", "Four men's voices at the same microphone", "Quattro voci maschili allo stesso microfono", "Vier Männerstimmen am selben Mikrofon"), 15),
+    italyPhoto("seara-impreuna", L("Seară împreună în sala de mese", "An evening together in the dining hall", "Una serata insieme in sala da pranzo", "Ein gemeinsamer Abend im Speisesaal"), 16),
+    italyPhoto("concert-din-banci", L("Corul în fața altarului, văzut din bănci", "The choir before the altar, seen from the pews", "Il coro davanti all'altare, visto dai banchi", "Der Chor vor dem Altar, von den Bänken aus gesehen"), 17),
+    italyPhoto("cantam-la-masa", L("Cântăm împreună în sala de mese", "Singing together in the dining hall", "Cantiamo insieme in sala da pranzo", "Gemeinsames Singen im Speisesaal"), 18),
+    italyPhoto("veselie", L("Râdem și ne ținem de mână, într-o seară împreună", "Laughing and holding hands on an evening together", "Ridiamo tenendoci per mano, in una serata insieme", "Wir lachen und halten uns an den Händen, an einem gemeinsamen Abend"), 19),
+    italyPhoto("vesminte", L("Ni se arată veșminte bisericești", "Being shown church vestments", "Ci mostrano i paramenti sacri", "Man zeigt uns liturgische Gewänder"), 20),
   ],
   settings: {
     founding_date: "",

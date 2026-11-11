@@ -17,7 +17,8 @@ import { Albums, ConductorBio, ConductorPhoto, CouncilGrid, DonationPanel, Event
 
 type ViewProps = { locale: Locale; t: Dict };
 
-const altOf = (src: string, locale: string) => localized(seed.photos.find((p) => p.src === `concert-5-ani/${src}`)?.alt, locale);
+const fullKey = (src: string) => (src.includes("/") ? src : `concert-5-ani/${src}`);
+const altOf = (src: string, locale: string) => localized(seed.photos.find((p) => p.src === fullKey(src))?.alt, locale);
 
 function PageHead({ title, lead, children }: { title: string; lead?: string; children?: React.ReactNode }) {
   return (
@@ -40,7 +41,7 @@ function ParallaxPhoto({ src, alt, sizes, priority }: { src: string; alt: string
 const pill = "h-12 rounded-full px-6 text-base font-semibold";
 
 function Home({ locale, t }: ViewProps) {
-  const band = ["voci-si-band", "baieti-grup", "alelia-dirijat", "grup-scena", "baieti-cantand", "alelia-cor", "voci-si-band-2", "grup-aplauze"];
+  const band = ["voci-si-band", "italia-2026/grup-lac", "baieti-grup", "alelia-dirijat", "italia-2026/esarfe-galbene", "grup-scena", "baieti-cantand", "alelia-cor", "voci-si-band-2", "grup-aplauze"];
   return (
     <>
       <section className="frame pt-3">
@@ -74,7 +75,7 @@ function Home({ locale, t }: ViewProps) {
         <div className="marquee-track">
           {[...band, ...band].map((src, i) => (
             <div key={i} className="tile h-[clamp(9rem,20vw,17rem)] w-[clamp(13rem,30vw,26rem)] shrink-0" aria-hidden={i >= band.length || undefined}>
-              <Photo src={`concert-5-ani/${src}`} alt={i < band.length ? altOf(src, locale) : ""} sizes="30vw" className="size-full object-cover" />
+              <Photo src={fullKey(src)} alt={i < band.length ? altOf(src, locale) : ""} sizes="30vw" className="size-full object-cover" />
             </div>
           ))}
         </div>
@@ -168,6 +169,11 @@ function Italia({ locale, t }: ViewProps) {
   return (
     <>
       <PageHead title={i.h1} lead={i.lead} />
+      <div className="frame mt-10">
+        <div className="tile aspect-[16/10] lg:aspect-[2/1]" data-reveal>
+          <Photo src="italia-2026/grup-lac" alt={altOf("italia-2026/grup-lac", locale)} sizes="100vw" priority className="size-full object-cover object-[50%_80%]" />
+        </div>
+      </div>
       <section className="frame section" aria-labelledby="jurnal">
         <div className="mosaic">
           <div className="tile tile-surface col-span-12 p-6 sm:p-10 lg:col-span-7">

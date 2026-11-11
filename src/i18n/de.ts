@@ -27,7 +27,7 @@ export const de: Dict = {
     line: "Eine Familie, die singend betet.",
     pages: "Seiten", follow: "Hier findest du uns auch", call: "Ruf uns an",
     credit: "Erstellt von Miron Cornel-Iosif",
-    photos: "Fotos vom Jubiläumskonzert 2025.",
+    photos: "Fotos von unseren Konzerten und Tourneen.",
   },
   common: {
     addToCalendar: "Zum Kalender hinzufügen", shareWhatsapp: "Auf WhatsApp teilen", announced: "Angekündigt",
@@ -51,7 +51,7 @@ export const de: Dict = {
       bas: { name: "Bass", line: "Das Fundament des Chors. Man spürt ihn mehr, als man ihn hört." },
       nustiu: { name: "Weiß ich noch nicht", line: "Das ist völlig in Ordnung. Wir finden sie gemeinsam bei deiner ersten Probe." },
     },
-    marqueeLabel: "Fotos vom Jubiläumskonzert 2025",
+    marqueeLabel: "Fotos von unseren Konzerten und Tourneen",
   },
   about: {
     h1: "Alles begann auf Zoom",
@@ -86,7 +86,7 @@ export const de: Dict = {
   },
   italy: {
     h1: "Italien 2026",
-    lead: "Die Italien-Tournee ist eine Erinnerung, die wir mit uns tragen. Hier erzählen wir sie nur mit dem, was wir damals unterwegs geschrieben haben.",
+    lead: "Die Italien-Tournee ist eine Erinnerung, die wir mit uns tragen. Hier erzählen wir sie mit Fotos und mit dem, was wir damals unterwegs geschrieben haben.",
     bodyTitle: "Was wir damals geschrieben haben",
     body: [
       "Am 28. Februar schrieben wir „Il torneo sta arrivando“. Am 17. März „Turneu în Itaaliaa“. Zwei Tage später fragten wir „Unde mergem să mâncăm niște paste?!“ (Wo gehen wir Pasta essen?). Nach diesen Beiträgen war die Tournee etwa im März 2026.",

@@ -97,5 +97,215 @@
    1200
   ],
   "color": "rgb(24,24,24)"
+ },
+ "italia-2026/grup-lac": {
+  "w": 5184,
+  "h": 3456,
+  "widths": [
+   640,
+   1200,
+   1920
+  ],
+  "color": "rgb(216,248,248)"
+ },
+ "italia-2026/cor-altar": {
+  "w": 5184,
+  "h": 3456,
+  "widths": [
+   640,
+   1200,
+   1920
+  ],
+  "color": "rgb(8,8,8)"
+ },
+ "italia-2026/grup-panorama": {
+  "w": 5184,
+  "h": 3456,
+  "widths": [
+   640,
+   1200,
+   1920
+  ],
+  "color": "rgb(184,200,216)"
+ },
+ "italia-2026/voci-aproape": {
+  "w": 5184,
+  "h": 3456,
+  "widths": [
+   640,
+   1200,
+   1920
+  ],
+  "color": "rgb(24,24,24)"
+ },
+ "italia-2026/grup-munti": {
+  "w": 5184,
+  "h": 3456,
+  "widths": [
+   640,
+   1200,
+   1920
+  ],
+  "color": "rgb(24,40,40)"
+ },
+ "italia-2026/in-biserica": {
+  "w": 5184,
+  "h": 3456,
+  "widths": [
+   640,
+   1200,
+   1920
+  ],
+  "color": "rgb(8,8,8)"
+ },
+ "italia-2026/supa": {
+  "w": 5184,
+  "h": 3456,
+  "widths": [
+   640,
+   1200,
+   1920
+  ],
+  "color": "rgb(88,88,88)"
+ },
+ "italia-2026/esarfe-galbene": {
+  "w": 5184,
+  "h": 3456,
+  "widths": [
+   640,
+   1200,
+   1920
+  ],
+  "color": "rgb(24,24,24)"
+ },
+ "italia-2026/bratele-sus": {
+  "w": 5184,
+  "h": 3456,
+  "widths": [
+   640,
+   1200,
+   1920
+  ],
+  "color": "rgb(8,8,8)"
+ },
+ "italia-2026/aplauze": {
+  "w": 5184,
+  "h": 3456,
+  "widths": [
+   640,
+   1200,
+   1920
+  ],
+  "color": "rgb(248,248,248)"
+ },
+ "italia-2026/baieti-negru": {
+  "w": 5184,
+  "h": 3456,
+  "widths": [
+   640,
+   1200,
+   1920
+  ],
+  "color": "rgb(24,24,24)"
+ },
+ "italia-2026/cu-bagajele": {
+  "w": 5184,
+  "h": 3456,
+  "widths": [
+   640,
+   1200,
+   1920
+  ],
+  "color": "rgb(248,248,248)"
+ },
+ "italia-2026/biserica-plina": {
+  "w": 5184,
+  "h": 3456,
+  "widths": [
+   640,
+   1200,
+   1920
+  ],
+  "color": "rgb(8,8,8)"
+ },
+ "italia-2026/grup-altar": {
+  "w": 5184,
+  "h": 3456,
+  "widths": [
+   640,
+   1200,
+   1920
+  ],
+  "color": "rgb(24,24,24)"
+ },
+ "italia-2026/servim": {
+  "w": 5184,
+  "h": 3456,
+  "widths": [
+   640,
+   1200,
+   1920
+  ],
+  "color": "rgb(248,248,248)"
+ },
+ "italia-2026/patru-voci": {
+  "w": 5184,
+  "h": 3456,
+  "widths": [
+   640,
+   1200,
+   1920
+  ],
+  "color": "rgb(40,24,24)"
+ },
+ "italia-2026/seara-impreuna": {
+  "w": 5184,
+  "h": 3456,
+  "widths": [
+   640,
+   1200,
+   1920
+  ],
+  "color": "rgb(8,8,8)"
+ },
+ "italia-2026/concert-din-banci": {
+  "w": 5184,
+  "h": 3456,
+  "widths": [
+   640,
+   1200,
+   1920
+  ],
+  "color": "rgb(8,8,8)"
+ },
+ "italia-2026/cantam-la-masa": {
+  "w": 5184,
+  "h": 3456,
+  "widths": [
+   640,
+   1200,
+   1920
+  ],
+  "color": "rgb(8,8,8)"
+ },
+ "italia-2026/veselie": {
+  "w": 5184,
+  "h": 3456,
+  "widths": [
+   640,
+   1200,
+   1920
+  ],
+  "color": "rgb(8,8,8)"
+ },
+ "italia-2026/vesminte": {
+  "w": 5184,
+  "h": 3456,
+  "widths": [
+   640,
+   1200,
+   1920
+  ],
+  "color": "rgb(248,248,248)"
  }
 }

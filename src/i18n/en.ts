@@ -27,7 +27,7 @@ export const en: Dict = {
     line: "A family that prays by singing.",
     pages: "Pages", follow: "Find us here too", call: "Call us",
     credit: "Made by Miron Cornel-Iosif",
-    photos: "Photos from the 2025 anniversary concert.",
+    photos: "Photos from our concerts and tours.",
   },
   common: {
     addToCalendar: "Add to calendar", shareWhatsapp: "Share on WhatsApp", announced: "Announced",
@@ -51,7 +51,7 @@ export const en: Dict = {
       bas: { name: "Bass", line: "The foundation of the choir. You feel it more than you hear it." },
       nustiu: { name: "Not sure yet", line: "That is completely fine. We will find it together at your first rehearsal." },
     },
-    marqueeLabel: "Photos from the 2025 anniversary concert",
+    marqueeLabel: "Photos from our concerts and tours",
   },
   about: {
     h1: "A story that began on Zoom",
@@ -86,7 +86,7 @@ export const en: Dict = {
   },
   italy: {
     h1: "Italy 2026",
-    lead: "The tour of Italy is a memory we carry with us. Here we tell it only through what we wrote at the time, on the road.",
+    lead: "The tour of Italy is a memory we carry with us. Here we tell it through photos and through what we wrote at the time, on the road.",
     bodyTitle: "What we wrote at the time",
     body: [
       "On 28 February we wrote “Il torneo sta arrivando”. On 17 March, “Turneu în Itaaliaa”. Two days later we were asking “Unde mergem să mâncăm niște paste?!” (where shall we go for pasta?). Going by these posts, the tour was around March 2026.",

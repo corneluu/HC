@@ -27,7 +27,7 @@ export const it: Dict = {
     line: "Una famiglia che prega cantando.",
     pages: "Pagine", follow: "Ci trovi anche qui", call: "Chiamaci",
     credit: "Realizzato da Miron Cornel-Iosif",
-    photos: "Fotografie del concerto per l'anniversario del 2025.",
+    photos: "Fotografie dei nostri concerti e delle nostre tournée.",
   },
   common: {
     addToCalendar: "Aggiungi al calendario", shareWhatsapp: "Condividi su WhatsApp", announced: "Annunciato",
@@ -51,7 +51,7 @@ export const it: Dict = {
       bas: { name: "Basso", line: "Il fondamento del coro. Si sente più con il corpo che con le orecchie." },
       nustiu: { name: "Non lo so ancora", line: "Va benissimo. La troviamo insieme alla prima prova." },
     },
-    marqueeLabel: "Fotografie del concerto per l'anniversario del 2025",
+    marqueeLabel: "Fotografie dei nostri concerti e delle nostre tournée",
   },
   about: {
     h1: "Una storia iniziata su Zoom",
@@ -86,7 +86,7 @@ export const it: Dict = {
   },
   italy: {
     h1: "Italia 2026",
-    lead: "La tournée in Italia è un ricordo che portiamo con noi. Qui la raccontiamo solo con ciò che abbiamo scritto allora, per strada.",
+    lead: "La tournée in Italia è un ricordo che portiamo con noi. Qui la raccontiamo con le fotografie e con ciò che abbiamo scritto allora, per strada.",
     bodyTitle: "Quello che abbiamo scritto allora",
     body: [
       "Il 28 febbraio scrivevamo “Il torneo sta arrivando”. Il 17 marzo, “Turneu în Itaaliaa”. Due giorni dopo ci chiedevamo “Unde mergem să mâncăm niște paste?!” (dove andiamo a mangiare la pasta?). Stando a questi post, la tournée è stata intorno a marzo 2026.",

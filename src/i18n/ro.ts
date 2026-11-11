@@ -29,7 +29,7 @@ export const ro = {
     line: "O familie care se roagă cântând.",
     pages: "Pagini", follow: "Ne găsești și aici", call: "Sună-ne",
     credit: "Realizat de Miron Cornel-Iosif",
-    photos: "Fotografii de la concertul aniversar din 2025.",
+    photos: "Fotografii de la concertele și din turneele noastre.",
   },
   common: {
     addToCalendar: "Adaugă în calendar", shareWhatsapp: "Trimite pe WhatsApp", announced: "Anunțat",
@@ -59,7 +59,7 @@ export const ro = {
       bas: { name: "Bas", line: "Temelia corului. Se simte mai mult decât se aude." },
       nustiu: { name: "Nu știu încă", line: "Nu-i nimic, chiar nu-i nimic. O găsim împreună la prima repetiție." },
     },
-    marqueeLabel: "Fotografii de la concertul aniversar din 2025",
+    marqueeLabel: "Fotografii de la concertele și din turneele noastre",
   },
   about: {
     h1: "O poveste care a început pe Zoom",
@@ -94,7 +94,7 @@ export const ro = {
   },
   italy: {
     h1: "Italia 2026",
-    lead: "Turneul din Italia e o amintire pe care o purtăm cu noi. Aici ți-l spunem doar prin ce am scris atunci, pe drum.",
+    lead: "Turneul din Italia e o amintire pe care o purtăm cu noi. Aici ți-l spunem prin fotografii și prin ce am scris atunci, pe drum.",
     bodyTitle: "Ce am scris atunci",
     body: [
       "Pe 28 februarie scriam „Il torneo sta arrivando”. Pe 17 martie, „Turneu în Itaaliaa”. Două zile mai târziu ne întrebam „Unde mergem să mâncăm niște paste?!”. După aceste postări, turneul a fost cam în martie 2026.",
