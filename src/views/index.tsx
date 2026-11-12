@@ -247,11 +247,11 @@ function Italia({ locale, t }: ViewProps) {
               {ITALY_POSTS.map((p) => (
                 <li key={p.url}>
                   <time dateTime={p.date} className="block text-[0.9375rem]" suppressHydrationWarning>{formatDate(p.date, locale, { day: "numeric", month: "long" })}</time>
-                  <a href={p.url} target="_blank" rel="noopener" className="font-heading text-[clamp(1.1875rem,1.05rem+0.6vw,1.5rem)] font-medium leading-tight underline underline-offset-4" lang="ro" aria-label={`${i.openPost}: ${p.text}`}>{p.text}</a>
+                  <a href={p.url} target="_blank" rel="noopener noreferrer" className="font-heading text-[clamp(1.1875rem,1.05rem+0.6vw,1.5rem)] font-medium leading-tight underline underline-offset-4" lang="ro" aria-label={`${i.openPost}: ${p.text}`}>{p.text}</a>
                 </li>
               ))}
             </ol>
-            <p className="mt-7"><a href={CONTACT.instagram} target="_blank" rel="noopener" className="font-semibold underline underline-offset-4">{i.more}</a></p>
+            <p className="mt-7"><a href={CONTACT.instagram} target="_blank" rel="noopener noreferrer" className="font-semibold underline underline-offset-4">{i.more}</a></p>
           </div>
         </div>
       </section>
@@ -283,7 +283,7 @@ function Inctc({ t }: ViewProps) {
               <h2 className="title-section mb-5">{c.storyTitle}</h2>
               <div className="prose-body">{c.story.map((p) => <p key={p}>{p}</p>)}</div>
             </div>
-            <p><a href="https://corneluu.github.io/inctc/" target="_blank" rel="noopener" className="btn btn-green">{c.link} <ArrowUpRight className="size-4 shrink-0" aria-hidden /></a></p>
+            <p><a href="https://corneluu.github.io/inctc/" target="_blank" rel="noopener noreferrer" className="btn btn-green">{c.link} <ArrowUpRight className="size-4 shrink-0" aria-hidden /></a></p>
           </div>
         </div>
       </section>
@@ -339,9 +339,9 @@ function Muzica({ locale, t }: ViewProps) {
                 meta={`${album.tracks} ${m.tracks} · ${m.released} ${formatDate(album.released, locale, { day: "numeric", month: "long", year: "numeric" })}`}
               />
               <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-1 font-semibold">
-                {album.spotifyAlbumId ? <li><a className={link} target="_blank" rel="noopener" href={`https://open.spotify.com/album/${album.spotifyAlbumId}`}>Spotify</a></li> : null}
-                <li><a className={link} target="_blank" rel="noopener" href={album.apple}>Apple Music</a></li>
-                <li><a className={link} target="_blank" rel="noopener" href={album.deezer}>Deezer</a></li>
+                {album.spotifyAlbumId ? <li><a className={link} target="_blank" rel="noopener noreferrer" href={`https://open.spotify.com/album/${album.spotifyAlbumId}`}>Spotify</a></li> : null}
+                <li><a className={link} target="_blank" rel="noopener noreferrer" href={album.apple}>Apple Music</a></li>
+                <li><a className={link} target="_blank" rel="noopener noreferrer" href={album.deezer}>Deezer</a></li>
               </ul>
             </article>
           ))}
@@ -351,7 +351,7 @@ function Muzica({ locale, t }: ViewProps) {
         <h2 id="video" className="title-section mb-2">{m.videosTitle}</h2>
         <p className="mb-6 text-[0.9375rem]">{t.common.videoNote}</p>
         <VideoGrid locale={locale} t={t} />
-        <p className="mt-6"><a href={CONTACT.youtube} target="_blank" rel="noopener" className="btn btn-line">{m.channel} <ArrowUpRight className="size-4 shrink-0" aria-hidden /></a></p>
+        <p className="mt-6"><a href={CONTACT.youtube} target="_blank" rel="noopener noreferrer" className="btn btn-line">{m.channel} <ArrowUpRight className="size-4 shrink-0" aria-hidden /></a></p>
       </section>
     </>
   );
@@ -426,7 +426,7 @@ function Contact({ t }: ViewProps) {
             <ul className="grid">
               {social.map(([name, url]) => (
                 <li key={name}>
-                  <a href={url} target="_blank" rel="noopener" className="go flex min-h-13 items-center justify-between gap-3 border-b border-border py-3 font-heading text-[1.375rem] font-medium leading-tight">
+                  <a href={url} target="_blank" rel="noopener noreferrer" className="go flex min-h-13 items-center justify-between gap-3 border-b border-border py-3 font-heading text-[1.375rem] font-medium leading-tight">
                     {name} <ArrowUpRight className="arrow size-5 shrink-0" aria-hidden />
                   </a>
                 </li>

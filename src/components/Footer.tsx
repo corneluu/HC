@@ -38,14 +38,14 @@ export function Footer({ locale, t }: { locale: string; t: Dict }) {
             <h2 className="eyebrow"><span className="romb" aria-hidden />{t.footer.follow}</h2>
             <ul className="mt-3 grid grid-cols-2 gap-x-4">
               {SOCIAL.map(([name, url]) => (
-                <li key={name}><a className={link} href={url} rel="noopener" target="_blank">{name}</a></li>
+                <li key={name}><a className={link} href={url} rel="noopener noreferrer" target="_blank">{name}</a></li>
               ))}
             </ul>
           </div>
         </div>
 
         <div className="mt-10 flex flex-wrap justify-between gap-x-6 gap-y-2 border-t border-on-green/25 pt-5 text-[0.9375rem]">
-          <a className="underline underline-offset-4" href="https://corneluu.github.io/corneluu/" rel="noopener" target="_blank">{t.footer.credit}</a>
+          <a className="underline underline-offset-4" href="https://corneluu.github.io/corneluu/" rel="noopener noreferrer" target="_blank">{t.footer.credit}</a>
           <span>{t.footer.photos}</span>
           <Link className="underline-offset-4 hover:underline" href="/admin/" prefetch={false} rel="nofollow">Admin</Link>
         </div>

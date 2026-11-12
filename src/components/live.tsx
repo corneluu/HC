@@ -116,7 +116,7 @@ function Ticket({ event, locale, t, past, heading: Title = "h3" }: { event: Choi
         {past ? null : (
           <div className="mt-4 flex flex-wrap gap-2">
             <button type="button" onClick={download} className="btn btn-dark"><Calendar className="size-4 shrink-0" aria-hidden /> {t.common.addToCalendar}</button>
-            <a href={share} target="_blank" rel="noopener" className="btn btn-line"><MessageCircle className="size-4 shrink-0" aria-hidden /> {t.common.shareWhatsapp}</a>
+            <a href={share} target="_blank" rel="noopener noreferrer" className="btn btn-line"><MessageCircle className="size-4 shrink-0" aria-hidden /> {t.common.shareWhatsapp}</a>
           </div>
         )}
         {event.poster && /^https:\/\//.test(event.poster) ? <Photo src={event.poster} alt={title} className="mt-4 w-full max-w-xs rounded-lg" /> : null}

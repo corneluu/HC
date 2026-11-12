@@ -173,7 +173,7 @@ export function AdminApp() {
           </nav>
           <div className="flex shrink-0 items-center gap-1">
             <span className="mr-2 hidden max-w-56 truncate text-[0.9375rem] text-muted-foreground xl:inline">{session.user.email}</span>
-            <a href={asset("/ro/")} target="_blank" rel="noopener" aria-label="Deschide site-ul" title="Deschide site-ul" className="grid size-11 place-items-center rounded-lg hover:bg-muted"><ExternalLink className="size-5" /></a>
+            <a href={asset("/ro/")} target="_blank" rel="noopener noreferrer" aria-label="Deschide site-ul" title="Deschide site-ul" className="grid size-11 place-items-center rounded-lg hover:bg-muted"><ExternalLink className="size-5" /></a>
             <button type="button" onClick={logout} aria-label="Ieși din cont" title="Ieși din cont" className="grid size-11 place-items-center rounded-lg hover:bg-muted"><LogOut className="size-5" /></button>
           </div>
         </div>
